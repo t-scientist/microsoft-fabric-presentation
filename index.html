@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Apresentação interativa sobre a integração de Microsoft Fabric (SaaS), Azure PaaS e Azure DevOps para nova área de dados, com foco em FinOps e custos otimizados.">
+  <title>Microsoft Fabric & Azure: Sinergia Estratégica e FinOps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+  <!-- Background Animated Gradients -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- Main Presentation Container -->
+  <main id="presentation-container">
+    
+    <!-- Slide 1: Capa -->
+    <section class="slide active" id="slide-capa" data-slide="1">
+      <div class="slide-content centered-content">
+        <div class="badge animate-fade">Nova Área de Dados & Analytics</div>
+        <h1 class="main-title animate-slide-up">Microsoft Fabric & Azure</h1>
+        <p class="subtitle animate-slide-up">Sinergia Estratégica, Operacional e Governança FinOps</p>
+        <div class="divider"></div>
+        <p class="footer-info">Use as setas do teclado ou os botões de navegação para interagir</p>
+      </div>
+    </section>
+
+    <!-- Slide 2: Visão de Arquitetura -->
+    <section class="slide" id="slide-arquitetura" data-slide="2">
+      <div class="slide-content">
+        <h2 class="slide-title">Visão Geral da Arquitetura</h2>
+        <p class="slide-desc">Integração sem sobreposição para máxima eficiência operacional.</p>
+        
+        <div class="architecture-grid">
+          <!-- Coluna Fabric (SaaS) -->
+          <div class="glass-card">
+            <div class="card-header border-fabric">
+              <span class="tech-tag tag-fabric">Microsoft Fabric (SaaS)</span>
+              <h3>Camada de Analytics & BI</h3>
+            </div>
+            <ul class="features-list">
+              <li><strong>OneLake</strong>: Repositório único, sem silos de dados.</li>
+              <li><strong>Data Factory</strong>: Ingestão integrada de dados (Dataflows/Pipelines).</li>
+              <li><strong>Synapse Spark</strong>: Engenharia de dados e machine learning nativos.</li>
+              <li><strong>Power BI</strong>: Camada de relatórios e insights em tempo real.</li>
+            </ul>
+            <div class="card-footer-info">Tudo centralizado em uma capacidade única (F-SKU).</div>
+          </div>
+
+          <!-- Coluna Conectividade -->
+          <div class="connector-card">
+            <div class="pulse-line"></div>
+            <div class="connector-badge">Shortcuts & APIs</div>
+            <div class="pulse-line"></div>
+          </div>
+
+          <!-- Coluna Azure (PaaS) -->
+          <div class="glass-card">
+            <div class="card-header border-azure">
+              <span class="tech-tag tag-azure">Azure PaaS</span>
+              <h3>Camada Operacional & Segurança</h3>
+            </div>
+            <ul class="features-list">
+              <li><strong>Azure SQL Serverless</strong>: Banco de dados relacional para a aplicação/sistemas operacionais.</li>
+              <li><strong>Azure Key Vault</strong>: Cofre centralizado de chaves de API e strings de conexão.</li>
+              <li><strong>Identidades Gerenciadas (Entra ID)</strong>: Comunicação segura e sem senhas expostas.</li>
+            </ul>
+            <div class="card-footer-info">Custos sob demanda com provisionamento elástico.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 3: O Poder de Cada Pilar -->
+    <section class="slide" id="slide-pilares" data-slide="3">
+      <div class="slide-content">
+        <h2 class="slide-title">Potencial Estratégico & Operacional</h2>
+        <p class="slide-desc">Como a união entre o pronto para uso (SaaS) e a alta customização (PaaS) acelera os resultados.</p>
+
+        <div class="panels-container">
+          <div class="interactive-panel" onclick="toggleActivePanel(this)">
+            <div class="panel-icon">⚡</div>
+            <h3>Rapidez e Agilidade (SaaS)</h3>
+            <p>O Fabric elimina a necessidade de construir conexões de infraestrutura do zero. A nova área entra em operação em dias, não meses.</p>
+          </div>
+          
+          <div class="interactive-panel" onclick="toggleActivePanel(this)">
+            <div class="panel-icon">🛡️</div>
+            <h3>Segurança e Controle (PaaS)</h3>
+            <p>Os segredos e dados transacionais sensíveis residem na infraestrutura segura do Azure, protegidos por VNets e chaves de segurança gerenciadas.</p>
+          </div>
+
+          <div class="interactive-panel" onclick="toggleActivePanel(this)">
+            <div class="panel-icon">📈</div>
+            <h3>Escalabilidade sem Ociosidade</h3>
+            <p>Ambos os mundos escalam dinamicamente. O Azure SQL pausa quando inativo e o Fabric permite escala por demanda e pausa rápida.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 4: Governança com Azure DevOps -->
+    <section class="slide" id="slide-devops" data-slide="4">
+      <div class="slide-content">
+        <h2 class="slide-title">Governança Unificada com Azure DevOps</h2>
+        <p class="slide-desc">Segurança, rastreabilidade e automação do ciclo de desenvolvimento.</p>
+
+        <div class="devops-flow">
+          <div class="flow-step">
+            <div class="step-num">01</div>
+            <h4>Boards</h4>
+            <p>Planejamento ágil, sprints e backlog unificado para a nova área de dados.</p>
+          </div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-step">
+            <div class="step-num">02</div>
+            <h4>Git Versioning</h4>
+            <p>Versionamento nativo de códigos SQL, scripts de IaC e objetos do Fabric.</p>
+          </div>
+          <div class="flow-arrow">➔</div>
+          <div class="flow-step">
+            <div class="step-num">03</div>
+            <h4>Pipelines (CI/CD)</h4>
+            <p>Testes automatizados e entrega contínua nos ambientes de Dev, Hml e Prod.</p>
+          </div>
+        </div>
+
+        <div class="info-alert">
+          <strong>Integração Fabric + DevOps:</strong> O Fabric possui integração nativa com o Git do Azure DevOps, sincronizando workspaces com repositórios de forma bidirecional.
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 5: Simulador FinOps Interativo -->
+    <section class="slide" id="slide-simulador" data-slide="5">
+      <div class="slide-content">
+        <h2 class="slide-title">Simulador de Custos FinOps</h2>
+        <p class="slide-desc">Projete a infraestrutura financeira da nova área ajustando os seletores abaixo.</p>
+
+        <div class="simulator-layout">
+          <!-- Controles do Simulador -->
+          <div class="simulator-controls glass-card">
+            <h4>Definições de Carga</h4>
+            
+            <div class="control-group">
+              <label for="fabric-sku">Microsoft Fabric Capacity (Compute):</label>
+              <select id="fabric-sku" onchange="calculateCosts()">
+                <option value="F2-PAYG">F2 (Pay-As-You-Go) - ~$262.80/mês</option>
+                <option value="F2-RES">F2 (Reservado 1 ano) - ~$156.33/mês</option>
+                <option value="F4-PAYG">F4 (Pay-As-You-Go) - ~$525.60/mês</option>
+                <option value="F4-RES">F4 (Reservado 1 ano) - ~$312.67/mês</option>
+                <option value="F8-RES" selected>F8 (Reservado 1 ano) - ~$625.33/mês</option>
+                <option value="F64-RES">F64 (Reservado - Isenta Power BI Pro) - ~$5,002.67/mês</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="storage-gb">Armazenamento OneLake (GB): <span id="storage-val">1000</span> GB</label>
+              <input type="range" id="storage-gb" min="10" max="10000" step="50" value="1000" oninput="updateStorageLabel(this.value)">
+            </div>
+
+            <div class="control-group">
+              <label for="azure-sql">Azure SQL Database (Serverless):</label>
+              <select id="azure-sql" onchange="calculateCosts()">
+                <option value="DEV-PAUSE">Dev/Test (Serverless c/ Auto-Pause) - ~$55/mês</option>
+                <option value="PROD-LIGHT" selected>Produção Light (2 vCores - 300h) - ~$200/mês</option>
+                <option value="PROD-HIGH">Produção Heavy (4 vCores - 24/7) - ~$850/mês</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="devops-users">Usuários Pagos do Azure DevOps: <span id="users-val">5</span></label>
+              <input type="range" id="devops-users" min="0" max="50" step="1" value="5" oninput="updateUsersLabel(this.value)">
+              <div class="help-text">Os primeiros 5 são grátis na organização.</div>
+            </div>
+          </div>
+
+          <!-- Resultados do Simulador -->
+          <div class="simulator-results glass-card">
+            <h4>Custo Mensal Estimado</h4>
+            
+            <div class="cost-summary">
+              <span class="currency">US$</span>
+              <span class="total-cost" id="total-cost-val">871.33</span>
+              <span class="period">/mês</span>
+            </div>
+
+            <div class="cost-breakdown">
+              <div class="breakdown-item">
+                <span>Fabric Compute:</span>
+                <span id="breakdown-fabric-compute">$625.33</span>
+              </div>
+              <div class="breakdown-item">
+                <span>OneLake Storage:</span>
+                <span id="breakdown-onelake-storage">$23.00</span>
+              </div>
+              <div class="breakdown-item">
+                <span>Azure SQL PaaS:</span>
+                <span id="breakdown-azure-sql">$200.00</span>
+              </div>
+              <div class="breakdown-item">
+                <span>Azure DevOps (Licenças):</span>
+                <span id="breakdown-devops">$23.00</span>
+              </div>
+            </div>
+            
+            <div class="finops-badge">
+              <strong>Estratégia Anti-Sobreposição Ativa:</strong> Nenhuma ferramenta duplicada encontrada no escopo simulado.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 6: Próximos Passos -->
+    <section class="slide" id="slide-conclusao" data-slide="6">
+      <div class="slide-content centered-content">
+        <div class="badge border-azure">Sucesso Operacional</div>
+        <h2>Próximos Passos & Decisões</h2>
+        <div class="checklist-card glass-card">
+          <div class="check-item">
+            <span class="check-box">✓</span>
+            <div>
+              <strong>Configurar Conexões Base</strong>
+              <p>Os servidores MCP de Azure DevOps, GitHub, Azure e Figma já estão configurados e ativos.</p>
+            </div>
+          </div>
+          <div class="check-item">
+            <span class="check-box">☐</span>
+            <div>
+              <strong>Validar Capacidade Inicial</strong>
+              <p>Recomendamos iniciar com o Fabric F2 (Pay-As-You-Go) para validar o setup da nova área sem investimentos pesados.</p>
+            </div>
+          </div>
+          <div class="check-item">
+            <span class="check-box">☐</span>
+            <div>
+              <strong>Estabelecer a Integração Git</strong>
+              <p>Conectar o Workspace de desenvolvimento do Fabric ao repositório git correspondente no Azure DevOps.</p>
+            </div>
+          </div>
+        </div>
+        <p class="final-desc subtitle">Esta estrutura garante um setup limpo, escalável e alinhado com a governança da empresa.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Controls Footer -->
+  <footer id="presentation-footer">
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="presentation-progress"></div>
+    </div>
+    
+    <div class="footer-controls">
+      <button class="nav-btn" id="prev-btn" onclick="navigateSlide(-1)">◀ Voltar</button>
+      <div id="slide-indicator">1 / 6</div>
+      <button class="nav-btn" id="next-btn" onclick="navigateSlide(1)">Avançar ▶</button>
+    </div>
+  </footer>
+
+  <script src="index.js"></script>
+</body>
+</html>
