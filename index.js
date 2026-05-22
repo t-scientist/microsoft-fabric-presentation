@@ -141,104 +141,133 @@ function updateUsersLabel(value) {
 }
 
 function calculateCosts() {
-  const regime = document.getElementById('operation-regime').value;
-  const fabricSku = document.getElementById('fabric-sku').value;
-  const storageGb = parseFloat(document.getElementById('storage-gb').value) || 0;
-  const azureSql = document.getElementById('azure-sql').value;
-  const azureFunctions = document.getElementById('azure-functions').value;
-  const pbiUsers = parseInt(document.getElementById('pbi-users').value) || 0;
-  const devopsUsers = parseInt(document.getElementById('devops-users').value) || 0;
+  try {
+    const regimeEl = document.getElementById('operation-regime');
+    const fabricSkuEl = document.getElementById('fabric-sku');
+    const storageGbEl = document.getElementById('storage-gb');
+    const azureSqlEl = document.getElementById('azure-sql');
+    const azureFunctionsEl = document.getElementById('azure-functions');
+    const pbiUsersEl = document.getElementById('pbi-users');
+    const devopsUsersEl = document.getElementById('devops-users');
 
-  // Determine operational hours
-  let hours = 730;
-  if (regime === '5-12') hours = 240;
-  if (regime === '5-10') hours = 200;
-
-  // 1. Fabric Compute
-  let fabricComputeCost = 0;
-  const skuInfo = FABRIC_SKU_PRICES[fabricSku];
-  if (skuInfo.type === 'PAYG') {
-    fabricComputeCost = skuInfo.hourly * hours;
-  } else {
-    fabricComputeCost = skuInfo.monthly;
-  }
-
-  // 2. OneLake Storage
-  const oneLakeStorageCost = storageGb * ONELAKE_PRICE_PER_GB;
-
-  // 3. Azure SQL Cost (Serverless scale and regime dependent)
-  const azureSqlCost = AZURE_SQL_PRICES[azureSql][regime] || 0;
-
-  // 4. Azure Functions Cost
-  const functionsCost = AZURE_FUNCTIONS_PRICES[azureFunctions][regime] || 0;
-
-  // 5. Azure Key Vault (flat USD 5.00/month)
-  const keyVaultCost = 5.00;
-
-  // 6. Power BI Pro (USD 10.00/user, waived if F64 capacity selected)
-  let pbiCost = 0;
-  if (fabricSku !== 'F64-RES') {
-    pbiCost = pbiUsers * 10.00;
-  }
-
-  // 7. Azure DevOps (USD 6.00/user, first 5 users free)
-  const paidDevOpsUsers = Math.max(0, devopsUsers - 5);
-  const devopsCost = paidDevOpsUsers * 6.00;
-
-  // Raw Total in USD
-  const totalCostUSD = fabricComputeCost + oneLakeStorageCost + azureSqlCost + functionsCost + keyVaultCost + pbiCost + devopsCost;
-
-  // Apply exchange rate if BRL
-  const rate = (currentCurrency === 'BRL') ? EXCHANGE_RATE : 1.0;
-  const symbol = (currentCurrency === 'BRL') ? 'R$ ' : '$';
-
-  const fabricComputeCostCurr = fabricComputeCost * rate;
-  const oneLakeStorageCostCurr = oneLakeStorageCost * rate;
-  const azureSqlCostCurr = azureSqlCost * rate;
-  const functionsCostCurr = functionsCost * rate;
-  const keyVaultCostCurr = keyVaultCost * rate;
-  const pbiCostCurr = pbiCost * rate;
-  const devopsCostCurr = devopsCost * rate;
-  const totalCostCurr = totalCostUSD * rate;
-
-  // Update UI Elements
-  const symbolEl = document.getElementById('cost-currency-symbol');
-  if (symbolEl) symbolEl.textContent = symbol.trim();
-
-  document.getElementById('breakdown-fabric-compute').textContent = `${symbol}${fabricComputeCostCurr.toFixed(2)}`;
-  document.getElementById('breakdown-onelake-storage').textContent = `${symbol}${oneLakeStorageCostCurr.toFixed(2)}`;
-  document.getElementById('breakdown-azure-sql').textContent = `${symbol}${azureSqlCostCurr.toFixed(2)}`;
-  document.getElementById('breakdown-functions').textContent = `${symbol}${functionsCostCurr.toFixed(2)}`;
-  document.getElementById('breakdown-key-vault').textContent = `${symbol}${keyVaultCostCurr.toFixed(2)}`;
-  document.getElementById('breakdown-pbi').textContent = `${symbol}${pbiCostCurr.toFixed(2)}`;
-  document.getElementById('breakdown-devops').textContent = `${symbol}${devopsCostCurr.toFixed(2)}`;
-
-  // Update Key Vault static cost in controls group
-  const kvDisplay = document.getElementById('kv-display-cost');
-  if (kvDisplay) {
-    kvDisplay.textContent = `${symbol}${keyVaultCostCurr.toFixed(2)}/mês`;
-  }
-
-  // Update Total cost with smooth count animation
-  animateCounter('total-cost-val', totalCostCurr);
-
-  // Update FinOps dynamic message
-  const finopsBadge = document.getElementById('finops-badge-text');
-  if (finopsBadge) {
-    let msg = "";
-    if (fabricSku === 'F64-RES' && pbiUsers > 0) {
-      msg = `<strong>Estratégia FinOps Ativa:</strong> Licenças Power BI Pro isentas devido ao uso do Fabric F64-RES.`;
-    } else if ((regime === '5-12' || regime === '5-10') && skuInfo.type === 'PAYG') {
-      const savings = Math.round((1 - (hours / 730)) * 100);
-      msg = `<strong>Otimização de Escala Ativa:</strong> Pausa automática de computação Fabric PAYG ativada fora do horário comercial (Economia de ~${savings}% em compute).`;
-    } else if ((regime === '5-12' || regime === '5-10') && skuInfo.type === 'RES') {
-      msg = `<strong>Alerta FinOps:</strong> Capacidades Reservadas (RES) possuem custos fixos 24/7. Considere usar Pay-As-You-Go para habilitar a pausa automática no regime ${regime}.`;
-    } else if (devopsUsers <= 5 && devopsUsers > 0) {
-      msg = `<strong>Economia DevOps Ativa:</strong> Isenção de licenças básicas concedida para os primeiros 5 usuários na sua organização.`;
-    } else {
-      msg = `<strong>Estratégia Anti-Sobreposição Ativa:</strong> Componentes integrados e dimensionados sob demanda (SQL Serverless + Functions) sem redundância.`;
+    if (!regimeEl || !fabricSkuEl || !storageGbEl || !azureSqlEl || !azureFunctionsEl || !pbiUsersEl || !devopsUsersEl) {
+      console.warn("Simulator inputs are not fully rendered yet.");
+      return;
     }
-    finopsBadge.innerHTML = msg;
+
+    const regime = regimeEl.value;
+    const fabricSku = fabricSkuEl.value;
+    const storageGb = parseFloat(storageGbEl.value) || 0;
+    const azureSql = azureSqlEl.value;
+    const azureFunctions = azureFunctionsEl.value;
+    const pbiUsers = parseInt(pbiUsersEl.value) || 0;
+    const devopsUsers = parseInt(devopsUsersEl.value) || 0;
+
+    // Determine operational hours
+    let hours = 730;
+    if (regime === '5-12') hours = 240;
+    if (regime === '5-10') hours = 200;
+
+    // 1. Fabric Compute
+    let fabricComputeCost = 0;
+    const skuInfo = FABRIC_SKU_PRICES[fabricSku];
+    if (!skuInfo) {
+      console.warn(`SKU info for ${fabricSku} not found.`);
+      return;
+    }
+    if (skuInfo.type === 'PAYG') {
+      fabricComputeCost = skuInfo.hourly * hours;
+    } else {
+      fabricComputeCost = skuInfo.monthly;
+    }
+
+    // 2. OneLake Storage
+    const oneLakeStorageCost = storageGb * ONELAKE_PRICE_PER_GB;
+
+    // 3. Azure SQL Cost (Serverless scale and regime dependent)
+    const azureSqlCost = (AZURE_SQL_PRICES[azureSql] && AZURE_SQL_PRICES[azureSql][regime]) || 0;
+
+    // 4. Azure Functions Cost
+    const functionsCost = (AZURE_FUNCTIONS_PRICES[azureFunctions] && AZURE_FUNCTIONS_PRICES[azureFunctions][regime]) || 0;
+
+    // 5. Azure Key Vault (flat USD 5.00/month)
+    const keyVaultCost = 5.00;
+
+    // 6. Power BI Pro (USD 10.00/user, waived if F64 capacity selected)
+    let pbiCost = 0;
+    if (fabricSku !== 'F64-RES') {
+      pbiCost = pbiUsers * 10.00;
+    }
+
+    // 7. Azure DevOps (USD 6.00/user, first 5 users free)
+    const paidDevOpsUsers = Math.max(0, devopsUsers - 5);
+    const devopsCost = paidDevOpsUsers * 6.00;
+
+    // Raw Total in USD
+    const totalCostUSD = fabricComputeCost + oneLakeStorageCost + azureSqlCost + functionsCost + keyVaultCost + pbiCost + devopsCost;
+
+    // Apply exchange rate if BRL
+    const rate = (currentCurrency === 'BRL') ? EXCHANGE_RATE : 1.0;
+    const symbol = (currentCurrency === 'BRL') ? 'R$ ' : '$';
+
+    const fabricComputeCostCurr = fabricComputeCost * rate;
+    const oneLakeStorageCostCurr = oneLakeStorageCost * rate;
+    const azureSqlCostCurr = azureSqlCost * rate;
+    const functionsCostCurr = functionsCost * rate;
+    const keyVaultCostCurr = keyVaultCost * rate;
+    const pbiCostCurr = pbiCost * rate;
+    const devopsCostCurr = devopsCost * rate;
+    const totalCostCurr = totalCostUSD * rate;
+
+    // Update UI Elements
+    const symbolEl = document.getElementById('cost-currency-symbol');
+    if (symbolEl) symbolEl.textContent = symbol.trim();
+
+    const elFabric = document.getElementById('breakdown-fabric-compute');
+    const elStorage = document.getElementById('breakdown-onelake-storage');
+    const elSql = document.getElementById('breakdown-azure-sql');
+    const elFunctions = document.getElementById('breakdown-functions');
+    const elKv = document.getElementById('breakdown-key-vault');
+    const elPbi = document.getElementById('breakdown-pbi');
+    const elDevops = document.getElementById('breakdown-devops');
+
+    if (elFabric) elFabric.textContent = `${symbol}${fabricComputeCostCurr.toFixed(2)}`;
+    if (elStorage) elStorage.textContent = `${symbol}${oneLakeStorageCostCurr.toFixed(2)}`;
+    if (elSql) elSql.textContent = `${symbol}${azureSqlCostCurr.toFixed(2)}`;
+    if (elFunctions) elFunctions.textContent = `${symbol}${functionsCostCurr.toFixed(2)}`;
+    if (elKv) elKv.textContent = `${symbol}${keyVaultCostCurr.toFixed(2)}`;
+    if (elPbi) elPbi.textContent = `${symbol}${pbiCostCurr.toFixed(2)}`;
+    if (elDevops) elDevops.textContent = `${symbol}${devopsCostCurr.toFixed(2)}`;
+
+    // Update Key Vault static cost in controls group
+    const kvDisplay = document.getElementById('kv-display-cost');
+    if (kvDisplay) {
+      kvDisplay.textContent = `${symbol}${keyVaultCostCurr.toFixed(2)}/mês`;
+    }
+
+    // Update Total cost with smooth count animation
+    animateCounter('total-cost-val', totalCostCurr);
+
+    // Update FinOps dynamic message
+    const finopsBadge = document.getElementById('finops-badge-text');
+    if (finopsBadge) {
+      let msg = "";
+      if (fabricSku === 'F64-RES' && pbiUsers > 0) {
+        msg = `<strong>Estratégia FinOps Ativa:</strong> Licenças Power BI Pro isentas devido ao uso do Fabric F64-RES.`;
+      } else if ((regime === '5-12' || regime === '5-10') && skuInfo.type === 'PAYG') {
+        const savings = Math.round((1 - (hours / 730)) * 100);
+        msg = `<strong>Otimização de Escala Ativa:</strong> Pausa automática de computação Fabric PAYG ativada fora do horário comercial (Economia de ~${savings}% em compute).`;
+      } else if ((regime === '5-12' || regime === '5-10') && skuInfo.type === 'RES') {
+        msg = `<strong>Alerta FinOps:</strong> Capacidades Reservadas (RES) possuem custos fixos 24/7. Considere usar Pay-As-You-Go para habilitar a pausa automática no regime ${regime}.`;
+      } else if (devopsUsers <= 5 && devopsUsers > 0) {
+        msg = `<strong>Economia DevOps Ativa:</strong> Isenção de licenças básicas concedida para os primeiros 5 usuários na sua organização.`;
+      } else {
+        msg = `<strong>Estratégia Anti-Sobreposição Ativa:</strong> Componentes integrados e dimensionados sob demanda (SQL Serverless + Functions) sem redundância.`;
+      }
+      finopsBadge.innerHTML = msg;
+    }
+  } catch (error) {
+    console.error("Error in calculateCosts:", error);
   }
 }
 

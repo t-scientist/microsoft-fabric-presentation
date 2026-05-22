@@ -175,6 +175,16 @@ body {
   max-width: 800px;
 }
 
+#slide-capa .subtitle {
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  #slide-capa .subtitle {
+    white-space: normal;
+  }
+}
+
 .badge {
   background: hsla(270, 75%, 60%, 0.15);
   border: 1px solid var(--primary);
@@ -592,6 +602,7 @@ body {
   font-weight: 600;
   cursor: pointer;
   transition: var(--transition-fast);
+  white-space: nowrap;
 }
 
 .toggle-btn:hover {
@@ -902,10 +913,66 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
+.check-box.completed {
+  background: hsla(145, 75%, 45%, 0.2);
+  border-color: hsl(145, 75%, 45%);
+  color: hsl(145, 75%, 45%);
+}
+
+/* Compact styling for Slide 5 to prevent overlapping */
+#slide-simulador .slide-title {
+  margin-bottom: 0.15rem;
+  font-size: 2.2rem;
+}
+#slide-simulador .slide-desc {
+  margin-bottom: 0.8rem;
+  font-size: 1rem;
+}
+#slide-simulador .glass-card {
+  padding: 1.25rem;
+  border-radius: 12px;
+}
+#slide-simulador .controls-grid {
+  gap: 0.8rem;
+}
+#slide-simulador .control-group {
+  gap: 0.25rem;
+}
+#slide-simulador .control-group label {
+  font-size: 0.85rem;
+}
+#slide-simulador .control-group select,
+#slide-simulador .fixed-costs-info {
+  padding: 0.4rem 0.6rem;
+  font-size: 0.85rem;
+  height: 34px;
+}
+#slide-simulador .currency-toggle-container {
+  padding: 0.4rem 0.8rem;
+  margin-bottom: 0.8rem;
+}
+#slide-simulador .cost-summary {
+  margin: 0.5rem 0;
+}
+#slide-simulador .total-cost {
+  font-size: 3rem;
+}
+#slide-simulador .cost-breakdown {
+  gap: 0.4rem;
+  margin-bottom: 0.8rem;
+}
+#slide-simulador .breakdown-item {
+  font-size: 0.8rem;
+}
+#slide-simulador .finops-badge {
+  padding: 0.6rem;
+  font-size: 0.75rem;
+}
+
 /* ==========================================================================
    RESPONSIVE DESIGN
    ========================================================================== */
-@media (max-width: 900px) {
+@media (max-width: 768px) {
   #presentation-container {
     padding: 1rem;
   }

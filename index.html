@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Apresentação interativa sobre a integração de Fabric, Azure e Azure DevOps, com foco em FinOps e custos otimizados.">
+  <meta name="description"
+    content="Apresentação interativa sobre a integração de Fabric, Azure e Azure DevOps, com foco em FinOps e custos otimizados.">
   <title>Fabric, Azure & Azure DevOps: Eficiência Operacional e FinOps</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="index.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="index.css?v=2.0">
 </head>
+
 <body>
 
   <!-- Background Animated Gradients -->
@@ -18,7 +23,7 @@
 
   <!-- Main Presentation Container -->
   <main id="presentation-container">
-    
+
     <!-- Slide 1: Capa -->
     <section class="slide active" id="slide-capa" data-slide="1">
       <div class="slide-content centered-content">
@@ -35,7 +40,7 @@
       <div class="slide-content">
         <h2 class="slide-title">Visão Geral da Arquitetura</h2>
         <p class="slide-desc">Integração sem sobreposição para máxima eficiência operacional e governança.</p>
-        
+
         <div class="architecture-grid-3">
           <!-- Coluna Fabric -->
           <div class="glass-card">
@@ -58,10 +63,11 @@
               <h3>Dados & Computação</h3>
             </div>
             <ul class="features-list">
-              <li><strong>Azure SQL Serverless</strong>: Banco transacional e relacional para sistemas.</li>
+              <li><strong>Resource Manager</strong>: Definição de infraestrutura.</li>
+              <li><strong>Azure SQL Serverless</strong>: Banco transacional e relacional.</li>
               <li><strong>Azure Functions</strong>: Processamento serverless e automações.</li>
               <li><strong>Azure Key Vault</strong>: Cofre centralizado de chaves e segredos.</li>
-              <li><strong>Resource Manager</strong>: Definição de infraestrutura como código (IaC).</li>
+
             </ul>
             <div class="card-footer-info">Custos sob demanda com provisionamento elástico.</div>
           </div>
@@ -74,7 +80,7 @@
             </div>
             <ul class="features-list">
               <li><strong>Boards</strong>: Planejamento ágil, sprints e tracking de tarefas.</li>
-              <li><strong>Repos</strong>: Versionamento Git de códigos SQL, IaC e artefatos Fabric.</li>
+              <li><strong>Repos</strong>: Versionamento Git de códigos e artefatos Fabric.</li>
               <li><strong>Pipelines</strong>: CI/CD automatizado para múltiplos ambientes (Dev/Stg/Prod).</li>
             </ul>
             <div class="card-footer-info">Rastreabilidade completa do código à produção.</div>
@@ -117,17 +123,19 @@
             <h3>Rapidez e Agilidade</h3>
             <p>O Fabric elimina a necessidade de construir conexões de infraestrutura do zero.</p>
           </div>
-          
+
           <div class="interactive-panel" onclick="toggleActivePanel(this)">
             <div class="panel-icon">🛡️</div>
             <h3>Segurança e Controle</h3>
-            <p>Os segredos e dados transacionais sensíveis residem na infraestrutura segura do Azure, protegidos por redes virtuais e chaves de segurança gerenciadas.</p>
+            <p>Os segredos e dados transacionais sensíveis residem na infraestrutura segura do Azure, protegidos por
+              redes virtuais e chaves de segurança gerenciadas.</p>
           </div>
 
           <div class="interactive-panel" onclick="toggleActivePanel(this)">
             <div class="panel-icon">⚙️</div>
             <h3>Governança & Rastreabilidade</h3>
-            <p>O Azure DevOps garante auditoria completa, histórico de alterações via Git e testes automatizados antes de publicar em produção.</p>
+            <p>O Azure DevOps garante auditoria completa, histórico de alterações via Git e testes automatizados antes
+              de publicar em produção.</p>
           </div>
         </div>
       </div>
@@ -160,7 +168,8 @@
         </div>
 
         <div class="info-alert">
-          <strong>Integração Fabric + DevOps:</strong> O Fabric possui integração nativa com o Git do Azure DevOps, sincronizando workspaces com repositórios de forma bidirecional.
+          <strong>Integração Fabric + DevOps:</strong> O Fabric possui integração nativa com o Git do Azure DevOps,
+          sincronizando workspaces com repositórios de forma bidirecional.
         </div>
       </div>
     </section>
@@ -174,12 +183,12 @@
         <div class="simulator-layout">
           <!-- Controles do Simulador -->
           <div class="simulator-controls glass-card">
-            
+
             <div class="currency-toggle-container">
               <span class="toggle-label">Visualizar em:</span>
               <div class="toggle-buttons">
-                <button type="button" class="toggle-btn active" id="btn-usd" onclick="setCurrency('USD')">Dólar (USD)</button>
-                <button type="button" class="toggle-btn" id="btn-brl" onclick="setCurrency('BRL')">Real (BRL)</button>
+                <button type="button" class="toggle-btn active" id="btn-usd" onclick="setCurrency('USD')">USD ($)</button>
+                <button type="button" class="toggle-btn" id="btn-brl" onclick="setCurrency('BRL')">BRL (R$)</button>
               </div>
             </div>
 
@@ -210,7 +219,8 @@
               <!-- OneLake Storage -->
               <div class="control-group">
                 <label for="storage-gb">OneLake Storage: <span id="storage-val">1000</span> GB</label>
-                <input type="range" id="storage-gb" min="10" max="10000" step="50" value="1000" oninput="updateStorageLabel(this.value)">
+                <input type="range" id="storage-gb" min="10" max="10000" step="50" value="1000"
+                  oninput="updateStorageLabel(this.value)">
               </div>
 
               <!-- Azure SQL Serverless -->
@@ -237,7 +247,7 @@
               <div class="control-group">
                 <label>Segurança & Gestão:</label>
                 <div class="fixed-costs-info">
-                  <span>Key Vault: <strong id="kv-display-cost">$5.00/mês</strong></span> | 
+                  <span>Key Vault: <strong id="kv-display-cost">$5.00/mês</strong></span> |
                   <span>ARM: <strong class="green-text">Grátis</strong></span>
                 </div>
               </div>
@@ -245,13 +255,15 @@
               <!-- Power BI Pro Users -->
               <div class="control-group">
                 <label for="pbi-users">Power BI Pro (Usuários): <span id="pbi-users-val">5</span></label>
-                <input type="range" id="pbi-users" min="0" max="50" step="1" value="5" oninput="updatePbiUsersLabel(this.value)">
+                <input type="range" id="pbi-users" min="0" max="50" step="1" value="5"
+                  oninput="updatePbiUsersLabel(this.value)">
               </div>
 
               <!-- Azure DevOps Users -->
               <div class="control-group">
                 <label for="devops-users">Azure DevOps (Usuários): <span id="users-val">5</span></label>
-                <input type="range" id="devops-users" min="0" max="50" step="1" value="5" oninput="updateUsersLabel(this.value)">
+                <input type="range" id="devops-users" min="0" max="50" step="1" value="5"
+                  oninput="updateUsersLabel(this.value)">
                 <div class="help-text">Primeiros 5 usuários são grátis na org.</div>
               </div>
             </div>
@@ -261,7 +273,7 @@
           <!-- Resultados do Simulador -->
           <div class="simulator-results glass-card">
             <h4>Custo Mensal Estimado</h4>
-            
+
             <div class="cost-summary">
               <span class="currency" id="cost-currency-symbol">$</span>
               <span class="total-cost" id="total-cost-val">681.33</span>
@@ -298,9 +310,10 @@
                 <span id="breakdown-devops">$0.00</span>
               </div>
             </div>
-            
+
             <div class="finops-badge" id="finops-badge-text">
-              <strong>Estratégia Anti-Sobreposição Ativa:</strong> Nenhuma ferramenta duplicada encontrada no escopo simulado.
+              <strong>Estratégia Anti-Sobreposição Ativa:</strong> Nenhuma ferramenta duplicada encontrada no escopo
+              simulado.
             </div>
           </div>
         </div>
@@ -314,28 +327,29 @@
         <h2>Próximos Passos & Decisões</h2>
         <div class="checklist-card glass-card">
           <div class="check-item">
-            <span class="check-box">✓</span>
+            <span class="check-box completed">✓</span>
             <div>
-              <strong>Configurar Conexões Base</strong>
-              <p>Os servidores MCP de Azure DevOps, GitHub, Azure e Figma já estão configurados e ativos.</p>
+              <strong>Ativação da Capacidade Trial do Fabric (60 dias)</strong>
+              <p>Período de avaliação de 60 dias ativo para testes e homologação sem custos iniciais.</p>
             </div>
           </div>
           <div class="check-item">
             <span class="check-box">☐</span>
             <div>
-              <strong>Validar Capacidade Inicial</strong>
-              <p>Recomendamos iniciar com o Fabric F2 (Pay-As-You-Go) para validar o setup da nova área sem investimentos pesados.</p>
+              <strong>Especificação e Solicitação de Recursos no Azure</strong>
+              <p>Formalizar o pedido dos recursos sob demanda necessários (SQL Serverless, Functions e Key Vault).</p>
             </div>
           </div>
           <div class="check-item">
             <span class="check-box">☐</span>
             <div>
-              <strong>Estabelecer a Integração Git</strong>
-              <p>Conectar o Workspace de desenvolvimento do Fabric ao repositório git correspondente no Azure DevOps.</p>
+              <strong>Avaliação de Consumo do Trial para Contratação</strong>
+              <p>Monitorar a utilização de recursos durante o trial para definir o tamanho ideal (SKU) do Fabric.</p>
             </div>
           </div>
         </div>
-        <p class="final-desc subtitle">Esta estrutura garante um setup limpo, escalável e alinhado com a governança da empresa.</p>
+        <p class="final-desc subtitle">Esta estrutura garante um setup limpo, escalável e alinhado com a governança da
+          empresa.</p>
       </div>
     </section>
 
@@ -346,7 +360,7 @@
     <div class="progress-bar-container">
       <div class="progress-bar" id="presentation-progress"></div>
     </div>
-    
+
     <div class="footer-controls">
       <button class="nav-btn" id="prev-btn" onclick="navigateSlide(-1)">◀ Voltar</button>
       <div id="slide-indicator">1 / 6</div>
@@ -354,6 +368,7 @@
     </div>
   </footer>
 
-  <script src="index.js"></script>
+  <script src="index.js?v=2.0"></script>
 </body>
+
 </html>
