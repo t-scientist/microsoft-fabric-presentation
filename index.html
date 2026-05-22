@@ -227,7 +227,7 @@
               <div class="control-group">
                 <label for="azure-sql">Azure SQL (Serverless):</label>
                 <select id="azure-sql" onchange="calculateCosts()">
-                  <option value="DEV-PAUSE">Dev/Test (Serverless c/ Auto-Pause)</option>
+                  <option value="DEV-PAUSE">Dev/Stg (Serverless c/ Auto-Pause)</option>
                   <option value="PROD-LIGHT" selected>Produção Light (vCores Sob Demanda)</option>
                   <option value="PROD-HIGH">Produção Heavy (Escala Rápida)</option>
                 </select>
@@ -264,7 +264,7 @@
                 <label for="devops-users">Azure DevOps (Usuários): <span id="users-val">5</span></label>
                 <input type="range" id="devops-users" min="0" max="50" step="1" value="5"
                   oninput="updateUsersLabel(this.value)">
-                <div class="help-text">Primeiros 5 usuários são grátis na org.</div>
+                <div class="help-text">Custo adicional por usuário (organização já ultrapassou os 5 gratuitos).</div>
               </div>
             </div>
 

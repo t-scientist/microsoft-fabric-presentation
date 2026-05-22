@@ -199,9 +199,8 @@ function calculateCosts() {
       pbiCost = pbiUsers * 10.00;
     }
 
-    // 7. Azure DevOps (USD 6.00/user, first 5 users free)
-    const paidDevOpsUsers = Math.max(0, devopsUsers - 5);
-    const devopsCost = paidDevOpsUsers * 6.00;
+    // 7. Azure DevOps (USD 6.00/user - all paid as org already uses 5 free licenses)
+    const devopsCost = devopsUsers * 6.00;
 
     // Raw Total in USD
     const totalCostUSD = fabricComputeCost + oneLakeStorageCost + azureSqlCost + functionsCost + keyVaultCost + pbiCost + devopsCost;
@@ -259,8 +258,6 @@ function calculateCosts() {
         msg = `<strong>Otimização de Escala Ativa:</strong> Pausa automática de computação Fabric PAYG ativada fora do horário comercial (Economia de ~${savings}% em compute).`;
       } else if ((regime === '5-12' || regime === '5-10') && skuInfo.type === 'RES') {
         msg = `<strong>Alerta FinOps:</strong> Capacidades Reservadas (RES) possuem custos fixos 24/7. Considere usar Pay-As-You-Go para habilitar a pausa automática no regime ${regime}.`;
-      } else if (devopsUsers <= 5 && devopsUsers > 0) {
-        msg = `<strong>Economia DevOps Ativa:</strong> Isenção de licenças básicas concedida para os primeiros 5 usuários na sua organização.`;
       } else {
         msg = `<strong>Estratégia Anti-Sobreposição Ativa:</strong> Componentes integrados e dimensionados sob demanda (SQL Serverless + Functions) sem redundância.`;
       }
