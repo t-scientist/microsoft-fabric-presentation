@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Apresentação interativa sobre a integração de Microsoft Fabric (SaaS), Azure PaaS e Azure DevOps para nova área de dados, com foco em FinOps e custos otimizados.">
-  <title>Microsoft Fabric & Azure: Sinergia Estratégica e FinOps</title>
+  <meta name="description" content="Apresentação interativa sobre a integração de Fabric, Azure e Azure DevOps, com foco em FinOps e custos otimizados.">
+  <title>Fabric, Azure & Azure DevOps: Eficiência Operacional e FinOps</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -22,9 +22,9 @@
     <!-- Slide 1: Capa -->
     <section class="slide active" id="slide-capa" data-slide="1">
       <div class="slide-content centered-content">
-        <div class="badge animate-fade">Nova Área de Dados & Analytics</div>
-        <h1 class="main-title animate-slide-up">Microsoft Fabric & Azure</h1>
-        <p class="subtitle animate-slide-up">Sinergia Estratégica, Operacional e Governança FinOps</p>
+        <div class="badge animate-fade">EFICIÊNCIA OPERACIONAL | GOVERNANÇA DE DADOS</div>
+        <h1 class="main-title animate-slide-up">Fabric, Azure & Azure DevOps</h1>
+        <p class="subtitle animate-slide-up">Infraestrutura Moderna, Pipelines Automatizados e Otimização Financeira</p>
         <div class="divider"></div>
         <p class="footer-info">Use as setas do teclado ou os botões de navegação para interagir</p>
       </div>
@@ -34,43 +34,72 @@
     <section class="slide" id="slide-arquitetura" data-slide="2">
       <div class="slide-content">
         <h2 class="slide-title">Visão Geral da Arquitetura</h2>
-        <p class="slide-desc">Integração sem sobreposição para máxima eficiência operacional.</p>
+        <p class="slide-desc">Integração sem sobreposição para máxima eficiência operacional e governança.</p>
         
-        <div class="architecture-grid">
-          <!-- Coluna Fabric (SaaS) -->
+        <div class="architecture-grid-3">
+          <!-- Coluna Fabric -->
           <div class="glass-card">
             <div class="card-header border-fabric">
-              <span class="tech-tag tag-fabric">Microsoft Fabric (SaaS)</span>
-              <h3>Camada de Analytics & BI</h3>
+              <span class="tech-tag tag-fabric">Fabric</span>
+              <h3>Analytics & BI</h3>
             </div>
             <ul class="features-list">
               <li><strong>OneLake</strong>: Repositório único, sem silos de dados.</li>
               <li><strong>Data Factory</strong>: Ingestão integrada de dados (Dataflows/Pipelines).</li>
-              <li><strong>Synapse Spark</strong>: Engenharia de dados e machine learning nativos.</li>
               <li><strong>Power BI</strong>: Camada de relatórios e insights em tempo real.</li>
             </ul>
-            <div class="card-footer-info">Tudo centralizado em uma capacidade única (F-SKU).</div>
+            <div class="card-footer-info">Camada analítica centralizada em capacidade elástica.</div>
           </div>
 
-          <!-- Coluna Conectividade -->
-          <div class="connector-card">
-            <div class="pulse-line"></div>
-            <div class="connector-badge">Shortcuts & APIs</div>
-            <div class="pulse-line"></div>
-          </div>
-
-          <!-- Coluna Azure (PaaS) -->
+          <!-- Coluna Azure -->
           <div class="glass-card">
             <div class="card-header border-azure">
-              <span class="tech-tag tag-azure">Azure PaaS</span>
-              <h3>Camada Operacional & Segurança</h3>
+              <span class="tech-tag tag-azure">Azure</span>
+              <h3>Dados & Computação</h3>
             </div>
             <ul class="features-list">
-              <li><strong>Azure SQL Serverless</strong>: Banco de dados relacional para a aplicação/sistemas operacionais.</li>
-              <li><strong>Azure Key Vault</strong>: Cofre centralizado de chaves de API e strings de conexão.</li>
-              <li><strong>Identidades Gerenciadas (Entra ID)</strong>: Comunicação segura e sem senhas expostas.</li>
+              <li><strong>Azure SQL Serverless</strong>: Banco transacional e relacional para sistemas.</li>
+              <li><strong>Azure Functions</strong>: Processamento serverless e automações.</li>
+              <li><strong>Azure Key Vault</strong>: Cofre centralizado de chaves e segredos.</li>
+              <li><strong>Resource Manager</strong>: Definição de infraestrutura como código (IaC).</li>
             </ul>
             <div class="card-footer-info">Custos sob demanda com provisionamento elástico.</div>
+          </div>
+
+          <!-- Coluna DevOps -->
+          <div class="glass-card">
+            <div class="card-header border-devops">
+              <span class="tech-tag tag-devops">Azure DevOps</span>
+              <h3>Ciclo de Vida & CI/CD</h3>
+            </div>
+            <ul class="features-list">
+              <li><strong>Boards</strong>: Planejamento ágil, sprints e tracking de tarefas.</li>
+              <li><strong>Repos</strong>: Versionamento Git de códigos SQL, IaC e artefatos Fabric.</li>
+              <li><strong>Pipelines</strong>: CI/CD automatizado para múltiplos ambientes (Dev/Stg/Prod).</li>
+            </ul>
+            <div class="card-footer-info">Rastreabilidade completa do código à produção.</div>
+          </div>
+        </div>
+
+        <!-- Conectividade & Integração -->
+        <div class="connectivity-container">
+          <div class="connectivity-title animate-fade">Integrações Nativas & Governança</div>
+          <div class="connectivity-flow">
+            <div class="conn-item">
+              <span class="conn-icon">⇄</span>
+              <strong>Fabric ⬌ Azure</strong>
+              <p>Shortcuts no OneLake & APIs sem movimentação física de dados</p>
+            </div>
+            <div class="conn-item">
+              <span class="conn-icon">⇄</span>
+              <strong>Fabric ⬌ DevOps</strong>
+              <p>Sincronização nativa de Git para versionamento de workspaces</p>
+            </div>
+            <div class="conn-item">
+              <span class="conn-icon">⇄</span>
+              <strong>Azure ⬌ DevOps</strong>
+              <p>Pipelines automatizados de IaC (ARM/Bicep) e deploy de Functions</p>
+            </div>
           </div>
         </div>
       </div>
@@ -80,25 +109,25 @@
     <section class="slide" id="slide-pilares" data-slide="3">
       <div class="slide-content">
         <h2 class="slide-title">Potencial Estratégico & Operacional</h2>
-        <p class="slide-desc">Como a união entre o pronto para uso (SaaS) e a alta customização (PaaS) acelera os resultados.</p>
+        <p class="slide-desc">Como a união entre o pronto para uso e a alta customização acelera os resultados.</p>
 
         <div class="panels-container">
           <div class="interactive-panel" onclick="toggleActivePanel(this)">
             <div class="panel-icon">⚡</div>
-            <h3>Rapidez e Agilidade (SaaS)</h3>
-            <p>O Fabric elimina a necessidade de construir conexões de infraestrutura do zero. A nova área entra em operação em dias, não meses.</p>
+            <h3>Rapidez e Agilidade</h3>
+            <p>O Fabric elimina a necessidade de construir conexões de infraestrutura do zero.</p>
           </div>
           
           <div class="interactive-panel" onclick="toggleActivePanel(this)">
             <div class="panel-icon">🛡️</div>
-            <h3>Segurança e Controle (PaaS)</h3>
-            <p>Os segredos e dados transacionais sensíveis residem na infraestrutura segura do Azure, protegidos por VNets e chaves de segurança gerenciadas.</p>
+            <h3>Segurança e Controle</h3>
+            <p>Os segredos e dados transacionais sensíveis residem na infraestrutura segura do Azure, protegidos por redes virtuais e chaves de segurança gerenciadas.</p>
           </div>
 
           <div class="interactive-panel" onclick="toggleActivePanel(this)">
-            <div class="panel-icon">📈</div>
-            <h3>Escalabilidade sem Ociosidade</h3>
-            <p>Ambos os mundos escalam dinamicamente. O Azure SQL pausa quando inativo e o Fabric permite escala por demanda e pausa rápida.</p>
+            <div class="panel-icon">⚙️</div>
+            <h3>Governança & Rastreabilidade</h3>
+            <p>O Azure DevOps garante auditoria completa, histórico de alterações via Git e testes automatizados antes de publicar em produção.</p>
           </div>
         </div>
       </div>
@@ -114,19 +143,19 @@
           <div class="flow-step">
             <div class="step-num">01</div>
             <h4>Boards</h4>
-            <p>Planejamento ágil, sprints e backlog unificado para a nova área de dados.</p>
+            <p>Planejamento ágil, sprints e backlog unificado para o time.</p>
           </div>
           <div class="flow-arrow">➔</div>
           <div class="flow-step">
             <div class="step-num">02</div>
             <h4>Git Versioning</h4>
-            <p>Versionamento nativo de códigos SQL, scripts de IaC e objetos do Fabric.</p>
+            <p>Versionamento nativo de artefatos do Fabric.</p>
           </div>
           <div class="flow-arrow">➔</div>
           <div class="flow-step">
             <div class="step-num">03</div>
             <h4>Pipelines (CI/CD)</h4>
-            <p>Testes automatizados e entrega contínua nos ambientes de Dev, Hml e Prod.</p>
+            <p>Testes automatizados e entrega contínua nos ambientes de Dev, Stg e Prod.</p>
           </div>
         </div>
 
@@ -139,45 +168,94 @@
     <!-- Slide 5: Simulador FinOps Interativo -->
     <section class="slide" id="slide-simulador" data-slide="5">
       <div class="slide-content">
-        <h2 class="slide-title">Simulador de Custos FinOps</h2>
-        <p class="slide-desc">Projete a infraestrutura financeira da nova área ajustando os seletores abaixo.</p>
+        <h2 class="slide-title">Provisionamento de Custos</h2>
+        <p class="slide-desc">Projete a infraestrutura financeira.</p>
 
         <div class="simulator-layout">
           <!-- Controles do Simulador -->
           <div class="simulator-controls glass-card">
-            <h4>Definições de Carga</h4>
             
-            <div class="control-group">
-              <label for="fabric-sku">Microsoft Fabric Capacity (Compute):</label>
-              <select id="fabric-sku" onchange="calculateCosts()">
-                <option value="F2-PAYG">F2 (Pay-As-You-Go) - ~$262.80/mês</option>
-                <option value="F2-RES">F2 (Reservado 1 ano) - ~$156.33/mês</option>
-                <option value="F4-PAYG">F4 (Pay-As-You-Go) - ~$525.60/mês</option>
-                <option value="F4-RES">F4 (Reservado 1 ano) - ~$312.67/mês</option>
-                <option value="F8-RES" selected>F8 (Reservado 1 ano) - ~$625.33/mês</option>
-                <option value="F64-RES">F64 (Reservado - Isenta Power BI Pro) - ~$5,002.67/mês</option>
-              </select>
+            <div class="currency-toggle-container">
+              <span class="toggle-label">Visualizar em:</span>
+              <div class="toggle-buttons">
+                <button type="button" class="toggle-btn active" id="btn-usd" onclick="setCurrency('USD')">Dólar (USD)</button>
+                <button type="button" class="toggle-btn" id="btn-brl" onclick="setCurrency('BRL')">Real (BRL)</button>
+              </div>
             </div>
 
-            <div class="control-group">
-              <label for="storage-gb">Armazenamento OneLake (GB): <span id="storage-val">1000</span> GB</label>
-              <input type="range" id="storage-gb" min="10" max="10000" step="50" value="1000" oninput="updateStorageLabel(this.value)">
+            <div class="controls-grid">
+              <!-- Regime de Funcionamento -->
+              <div class="control-group">
+                <label for="operation-regime">Regime de Operação:</label>
+                <select id="operation-regime" onchange="calculateCosts()">
+                  <option value="24-7" selected>24/7 (Sempre Ativo - 730h)</option>
+                  <option value="5-12">5/12 (Seg-Sex, 12h/dia - 240h)</option>
+                  <option value="5-10">5/10 (Seg-Sex, 10h/dia - 200h)</option>
+                </select>
+              </div>
+
+              <!-- Fabric Compute -->
+              <div class="control-group">
+                <label for="fabric-sku">Capacidade Fabric (Compute):</label>
+                <select id="fabric-sku" onchange="calculateCosts()">
+                  <option value="F2-PAYG">F2 (Pay-As-You-Go)</option>
+                  <option value="F2-RES">F2 (Reservado 1 ano)</option>
+                  <option value="F4-PAYG">F4 (Pay-As-You-Go)</option>
+                  <option value="F4-RES">F4 (Reservado 1 ano)</option>
+                  <option value="F8-RES" selected>F8 (Reservado 1 ano)</option>
+                  <option value="F64-RES">F64 (Reservado - Isenta Power BI Pro)</option>
+                </select>
+              </div>
+
+              <!-- OneLake Storage -->
+              <div class="control-group">
+                <label for="storage-gb">OneLake Storage: <span id="storage-val">1000</span> GB</label>
+                <input type="range" id="storage-gb" min="10" max="10000" step="50" value="1000" oninput="updateStorageLabel(this.value)">
+              </div>
+
+              <!-- Azure SQL Serverless -->
+              <div class="control-group">
+                <label for="azure-sql">Azure SQL (Serverless):</label>
+                <select id="azure-sql" onchange="calculateCosts()">
+                  <option value="DEV-PAUSE">Dev/Test (Serverless c/ Auto-Pause)</option>
+                  <option value="PROD-LIGHT" selected>Produção Light (vCores Sob Demanda)</option>
+                  <option value="PROD-HIGH">Produção Heavy (Escala Rápida)</option>
+                </select>
+              </div>
+
+              <!-- Azure Functions -->
+              <div class="control-group">
+                <label for="azure-functions">Azure Functions:</label>
+                <select id="azure-functions" onchange="calculateCosts()">
+                  <option value="LIGHT" selected>Consumo Light (1M exec/mês - Grátis)</option>
+                  <option value="MEDIUM">Consumo Medium (10M exec/mês)</option>
+                  <option value="HEAVY">Consumo Heavy (50M exec/mês)</option>
+                </select>
+              </div>
+
+              <!-- Azure Key Vault & Resource Manager -->
+              <div class="control-group">
+                <label>Segurança & Gestão:</label>
+                <div class="fixed-costs-info">
+                  <span>Key Vault: <strong id="kv-display-cost">$5.00/mês</strong></span> | 
+                  <span>ARM: <strong class="green-text">Grátis</strong></span>
+                </div>
+              </div>
+
+              <!-- Power BI Pro Users -->
+              <div class="control-group">
+                <label for="pbi-users">Power BI Pro (Usuários): <span id="pbi-users-val">5</span></label>
+                <input type="range" id="pbi-users" min="0" max="50" step="1" value="5" oninput="updatePbiUsersLabel(this.value)">
+              </div>
+
+              <!-- Azure DevOps Users -->
+              <div class="control-group">
+                <label for="devops-users">Azure DevOps (Usuários): <span id="users-val">5</span></label>
+                <input type="range" id="devops-users" min="0" max="50" step="1" value="5" oninput="updateUsersLabel(this.value)">
+                <div class="help-text">Primeiros 5 usuários são grátis na org.</div>
+              </div>
             </div>
 
-            <div class="control-group">
-              <label for="azure-sql">Azure SQL Database (Serverless):</label>
-              <select id="azure-sql" onchange="calculateCosts()">
-                <option value="DEV-PAUSE">Dev/Test (Serverless c/ Auto-Pause) - ~$55/mês</option>
-                <option value="PROD-LIGHT" selected>Produção Light (2 vCores - 300h) - ~$200/mês</option>
-                <option value="PROD-HIGH">Produção Heavy (4 vCores - 24/7) - ~$850/mês</option>
-              </select>
-            </div>
-
-            <div class="control-group">
-              <label for="devops-users">Usuários Pagos do Azure DevOps: <span id="users-val">5</span></label>
-              <input type="range" id="devops-users" min="0" max="50" step="1" value="5" oninput="updateUsersLabel(this.value)">
-              <div class="help-text">Os primeiros 5 são grátis na organização.</div>
-            </div>
           </div>
 
           <!-- Resultados do Simulador -->
@@ -185,8 +263,8 @@
             <h4>Custo Mensal Estimado</h4>
             
             <div class="cost-summary">
-              <span class="currency">US$</span>
-              <span class="total-cost" id="total-cost-val">871.33</span>
+              <span class="currency" id="cost-currency-symbol">$</span>
+              <span class="total-cost" id="total-cost-val">681.33</span>
               <span class="period">/mês</span>
             </div>
 
@@ -200,16 +278,28 @@
                 <span id="breakdown-onelake-storage">$23.00</span>
               </div>
               <div class="breakdown-item">
-                <span>Azure SQL PaaS:</span>
-                <span id="breakdown-azure-sql">$200.00</span>
+                <span>Azure SQL:</span>
+                <span id="breakdown-azure-sql">$55.00</span>
+              </div>
+              <div class="breakdown-item">
+                <span>Azure Functions:</span>
+                <span id="breakdown-functions">$0.00</span>
+              </div>
+              <div class="breakdown-item">
+                <span>Azure Key Vault:</span>
+                <span id="breakdown-key-vault">$5.00</span>
+              </div>
+              <div class="breakdown-item">
+                <span>Power BI Pro (Licenças):</span>
+                <span id="breakdown-pbi">$0.00</span>
               </div>
               <div class="breakdown-item">
                 <span>Azure DevOps (Licenças):</span>
-                <span id="breakdown-devops">$23.00</span>
+                <span id="breakdown-devops">$0.00</span>
               </div>
             </div>
             
-            <div class="finops-badge">
+            <div class="finops-badge" id="finops-badge-text">
               <strong>Estratégia Anti-Sobreposição Ativa:</strong> Nenhuma ferramenta duplicada encontrada no escopo simulado.
             </div>
           </div>

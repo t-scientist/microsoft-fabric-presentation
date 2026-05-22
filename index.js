@@ -3,25 +3,32 @@
 // ==========================================================================
 let currentSlide = 1;
 const totalSlides = 6;
+let currentCurrency = 'USD';
+const EXCHANGE_RATE = 5.15;
 
-// Cost lookup tables
+// Cost lookup tables (in USD)
 const FABRIC_SKU_PRICES = {
-  "F2-PAYG": 262.80,
-  "F2-RES": 156.33,
-  "F4-PAYG": 525.60,
-  "F4-RES": 312.67,
-  "F8-RES": 625.33,
-  "F64-RES": 5002.67
+  "F2-PAYG": { type: "PAYG", hourly: 0.36 },
+  "F2-RES": { type: "RES", monthly: 156.33 },
+  "F4-PAYG": { type: "PAYG", hourly: 0.72 },
+  "F4-RES": { type: "RES", monthly: 312.67 },
+  "F8-RES": { type: "RES", monthly: 625.33 },
+  "F64-RES": { type: "RES", monthly: 5002.67 }
 };
 
 const AZURE_SQL_PRICES = {
-  "DEV-PAUSE": 55.00,
-  "PROD-LIGHT": 200.00,
-  "PROD-HIGH": 850.00
+  "DEV-PAUSE": { "24-7": 55.00, "5-12": 25.00, "5-10": 20.00 },
+  "PROD-LIGHT": { "24-7": 200.00, "5-12": 120.00, "5-10": 100.00 },
+  "PROD-HIGH": { "24-7": 850.00, "5-12": 550.00, "5-10": 450.00 }
+};
+
+const AZURE_FUNCTIONS_PRICES = {
+  "LIGHT": { "24-7": 0.00, "5-12": 0.00, "5-10": 0.00 },
+  "MEDIUM": { "24-7": 15.00, "5-12": 8.00, "5-10": 6.00 },
+  "HEAVY": { "24-7": 85.00, "5-12": 45.00, "5-10": 35.00 }
 };
 
 const ONELAKE_PRICE_PER_GB = 0.023;
-const DEVOPS_PRICE_PER_USER = 6.00;
 
 // ==========================================================================
 // SLIDE NAVIGATION CONTROLLER
@@ -98,8 +105,31 @@ function toggleActivePanel(panelElement) {
 // ==========================================================================
 // FINOPS COST SIMULATOR (Slide 5)
 // ==========================================================================
+function setCurrency(currency) {
+  currentCurrency = currency;
+  
+  const btnUsd = document.getElementById('btn-usd');
+  const btnBrl = document.getElementById('btn-brl');
+  
+  if (currency === 'USD') {
+    if (btnUsd) btnUsd.classList.add('active');
+    if (btnBrl) btnBrl.classList.remove('active');
+  } else {
+    if (btnBrl) btnBrl.classList.add('active');
+    if (btnUsd) btnUsd.classList.remove('active');
+  }
+  
+  calculateCosts();
+}
+
 function updateStorageLabel(value) {
   const label = document.getElementById('storage-val');
+  if (label) label.textContent = value;
+  calculateCosts();
+}
+
+function updatePbiUsersLabel(value) {
+  const label = document.getElementById('pbi-users-val');
   if (label) label.textContent = value;
   calculateCosts();
 }
@@ -111,31 +141,105 @@ function updateUsersLabel(value) {
 }
 
 function calculateCosts() {
-  // Get inputs
+  const regime = document.getElementById('operation-regime').value;
   const fabricSku = document.getElementById('fabric-sku').value;
   const storageGb = parseFloat(document.getElementById('storage-gb').value) || 0;
   const azureSql = document.getElementById('azure-sql').value;
+  const azureFunctions = document.getElementById('azure-functions').value;
+  const pbiUsers = parseInt(document.getElementById('pbi-users').value) || 0;
   const devopsUsers = parseInt(document.getElementById('devops-users').value) || 0;
 
-  // Perform Calculations
-  const fabricComputeCost = FABRIC_SKU_PRICES[fabricSku] || 0;
+  // Determine operational hours
+  let hours = 730;
+  if (regime === '5-12') hours = 240;
+  if (regime === '5-10') hours = 200;
+
+  // 1. Fabric Compute
+  let fabricComputeCost = 0;
+  const skuInfo = FABRIC_SKU_PRICES[fabricSku];
+  if (skuInfo.type === 'PAYG') {
+    fabricComputeCost = skuInfo.hourly * hours;
+  } else {
+    fabricComputeCost = skuInfo.monthly;
+  }
+
+  // 2. OneLake Storage
   const oneLakeStorageCost = storageGb * ONELAKE_PRICE_PER_GB;
-  const azureSqlCost = AZURE_SQL_PRICES[azureSql] || 0;
-  
-  // First 5 users are free in DevOps
+
+  // 3. Azure SQL Cost (Serverless scale and regime dependent)
+  const azureSqlCost = AZURE_SQL_PRICES[azureSql][regime] || 0;
+
+  // 4. Azure Functions Cost
+  const functionsCost = AZURE_FUNCTIONS_PRICES[azureFunctions][regime] || 0;
+
+  // 5. Azure Key Vault (flat USD 5.00/month)
+  const keyVaultCost = 5.00;
+
+  // 6. Power BI Pro (USD 10.00/user, waived if F64 capacity selected)
+  let pbiCost = 0;
+  if (fabricSku !== 'F64-RES') {
+    pbiCost = pbiUsers * 10.00;
+  }
+
+  // 7. Azure DevOps (USD 6.00/user, first 5 users free)
   const paidDevOpsUsers = Math.max(0, devopsUsers - 5);
-  const devopsCost = paidDevOpsUsers * DEVOPS_PRICE_PER_USER;
+  const devopsCost = paidDevOpsUsers * 6.00;
 
-  const totalCost = fabricComputeCost + oneLakeStorageCost + azureSqlCost + devopsCost;
+  // Raw Total in USD
+  const totalCostUSD = fabricComputeCost + oneLakeStorageCost + azureSqlCost + functionsCost + keyVaultCost + pbiCost + devopsCost;
 
-  // Update Breakdown Labels
-  document.getElementById('breakdown-fabric-compute').textContent = `$${fabricComputeCost.toFixed(2)}`;
-  document.getElementById('breakdown-onelake-storage').textContent = `$${oneLakeStorageCost.toFixed(2)}`;
-  document.getElementById('breakdown-azure-sql').textContent = `$${azureSqlCost.toFixed(2)}`;
-  document.getElementById('breakdown-devops').textContent = `$${devopsCost.toFixed(2)}`;
+  // Apply exchange rate if BRL
+  const rate = (currentCurrency === 'BRL') ? EXCHANGE_RATE : 1.0;
+  const symbol = (currentCurrency === 'BRL') ? 'R$ ' : '$';
 
-  // Update Total with counter animation
-  animateCounter('total-cost-val', totalCost);
+  const fabricComputeCostCurr = fabricComputeCost * rate;
+  const oneLakeStorageCostCurr = oneLakeStorageCost * rate;
+  const azureSqlCostCurr = azureSqlCost * rate;
+  const functionsCostCurr = functionsCost * rate;
+  const keyVaultCostCurr = keyVaultCost * rate;
+  const pbiCostCurr = pbiCost * rate;
+  const devopsCostCurr = devopsCost * rate;
+  const totalCostCurr = totalCostUSD * rate;
+
+  // Update UI Elements
+  const symbolEl = document.getElementById('cost-currency-symbol');
+  if (symbolEl) symbolEl.textContent = symbol.trim();
+
+  document.getElementById('breakdown-fabric-compute').textContent = `${symbol}${fabricComputeCostCurr.toFixed(2)}`;
+  document.getElementById('breakdown-onelake-storage').textContent = `${symbol}${oneLakeStorageCostCurr.toFixed(2)}`;
+  document.getElementById('breakdown-azure-sql').textContent = `${symbol}${azureSqlCostCurr.toFixed(2)}`;
+  document.getElementById('breakdown-functions').textContent = `${symbol}${functionsCostCurr.toFixed(2)}`;
+  document.getElementById('breakdown-key-vault').textContent = `${symbol}${keyVaultCostCurr.toFixed(2)}`;
+  document.getElementById('breakdown-pbi').textContent = `${symbol}${pbiCostCurr.toFixed(2)}`;
+  document.getElementById('breakdown-devops').textContent = `${symbol}${devopsCostCurr.toFixed(2)}`;
+
+  // Update Key Vault static cost in controls group
+  const kvDisplay = document.getElementById('kv-display-cost');
+  if (kvDisplay) {
+    kvDisplay.textContent = `${symbol}${keyVaultCostCurr.toFixed(2)}/mês`;
+  }
+
+  // Update Total cost with smooth count animation
+  animateCounter('total-cost-val', totalCostCurr);
+
+  // Update FinOps dynamic message
+  const finopsBadge = document.getElementById('finops-badge-text');
+  if (finopsBadge) {
+    let msg = "";
+    if (fabricSku === 'F64-RES' && pbiUsers > 0) {
+      msg = `<strong>Estratégia FinOps Ativa:</strong> Licenças Power BI Pro isentas devido ao uso do Fabric F64-RES.`;
+    } else if ((regime === '5-12' || regime === '5-10') && skuInfo.type === 'PAYG') {
+      const savings = Math.round((1 - (hours / 730)) * 100);
+      msg = `<strong>Otimização de Escala Ativa:</strong> Pausa automática de computação Fabric PAYG ativada fora do horário comercial (Economia de ~${savings}% em compute).`;
+    } else if ((regime === '5-12' || regime === '5-10') && skuInfo.type === 'RES') {
+      msg = `<strong>Alerta FinOps:</strong> Capacidades Reservadas (RES) possuem custos fixos 24/7. Considere usar Pay-As-You-Go para habilitar a pausa automática no regime ${regime}.`;
+    } else if (devopsUsers <= 5 && devopsUsers > 0) {
+      msg = `<strong>Economia DevOps Ativa:</strong> Isenção de licenças básicas concedida para os primeiros 5 usuários na sua organização.`;
+    } else {
+      msg = `<strong>Estratégia Anti-Sobreposição Ativa:</strong> Componentes integrados e dimensionados sob demanda (SQL Serverless + Functions) sem redundância.`;
+    }
+    finopsBadge.innerHTML = msg;
+  }
 }
 
 // Smooth number counter animation
@@ -143,7 +247,7 @@ function animateCounter(elementId, targetValue) {
   const el = document.getElementById(elementId);
   if (!el) return;
 
-  const startValue = parseFloat(el.textContent.replace(',', '')) || 0;
+  const startValue = parseFloat(el.textContent.replace(/[^\d.-]/g, '')) || 0;
   const duration = 400; // milliseconds
   const startTime = performance.now();
 
