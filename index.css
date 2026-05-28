@@ -974,6 +974,198 @@ body {
 }
 
 /* ==========================================================================
+   SLIDE 5: REQUIREMENTS MAPPING
+   ========================================================================== */
+#slide-requisitos .slide-content {
+  padding: 0.5rem 1rem;
+}
+
+#slide-requisitos .slide-title {
+  margin-bottom: 0.15rem;
+  font-size: 2.2rem;
+}
+
+#slide-requisitos .slide-desc {
+  margin-bottom: 0.8rem;
+  font-size: 1rem;
+}
+
+.requirements-layout {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.requirements-column {
+  padding: 1.25rem !important;
+  border-radius: 12px !important;
+  height: 420px;
+  display: flex;
+  flex-direction: column;
+}
+
+.requirements-column.border-fabric {
+  border-top: 4px solid var(--accent-fabric) !important;
+  border-left: 1px solid var(--border-color) !important;
+}
+
+.requirements-column.border-azure {
+  border-top: 4px solid var(--accent-azure) !important;
+  border-left: 1px solid var(--border-color) !important;
+}
+
+.column-title {
+  font-family: var(--font-title);
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.requirements-scroll-container {
+  overflow-y: auto;
+  flex-grow: 1;
+  padding-right: 0.5rem;
+}
+
+/* Custom premium scrollbar */
+.requirements-scroll-container::-webkit-scrollbar {
+  width: 6px;
+}
+.requirements-scroll-container::-webkit-scrollbar-track {
+  background: hsla(220, 20%, 6%, 0.3);
+  border-radius: 4px;
+}
+.requirements-scroll-container::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+.requirements-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary);
+}
+
+.req-item {
+  margin-bottom: 1rem;
+  border-bottom: 1px solid hsla(220, 20%, 25%, 0.3);
+  padding-bottom: 0.8rem;
+}
+
+.req-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.req-badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.7rem;
+  border-radius: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.3rem;
+}
+
+.status-issue {
+  background: hsla(35, 90%, 55%, 0.15);
+  border: 1px solid var(--accent-fabric);
+  color: var(--accent-fabric);
+}
+
+.status-need {
+  background: hsla(180, 80%, 50%, 0.15);
+  border: 1px solid var(--secondary);
+  color: var(--secondary);
+}
+
+.status-solution {
+  background: hsla(145, 75%, 45%, 0.15);
+  border: 1px solid hsl(145, 75%, 45%);
+  color: hsl(145, 75%, 45%);
+}
+
+.req-item strong {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  margin-bottom: 0.2rem;
+}
+
+.req-item p {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   SCENARIO SELECTOR (Slide 5)
+   ========================================================================== */
+.scenario-selector-container {
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-bottom: 1.2rem;
+  width: 100%;
+}
+
+.scenario-tab {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 0.6rem 1.2rem;
+  border-radius: 12px;
+  font-family: var(--font-title);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  backdrop-filter: blur(8px);
+  transition: var(--transition-smooth);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.scenario-tab:hover {
+  color: var(--text-primary);
+  border-color: var(--secondary);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 255, 255, 0.08);
+}
+
+.scenario-tab.active {
+  background: linear-gradient(135deg, hsla(270, 75%, 60%, 0.25), hsla(180, 80%, 0.15));
+  border-color: var(--primary);
+  color: var(--text-primary);
+  box-shadow: 0 0 15px var(--primary-glow);
+}
+
+.scenario-tab-icon {
+  font-size: 1.1rem;
+}
+
+.orange-text {
+  color: hsl(35, 90%, 55%);
+  font-weight: 700;
+}
+
+/* Slide 5 Specific Compact Selectors overrides */
+#slide-simulador .scenario-selector-container {
+  margin-bottom: 0.8rem;
+}
+
+#slide-simulador .scenario-tab {
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  border-radius: 10px;
+}
+
+/* ==========================================================================
    RESPONSIVE DESIGN
    ========================================================================== */
 @media (max-width: 768px) {
@@ -1051,4 +1243,25 @@ body {
   .controls-grid {
     grid-template-columns: 1fr;
   }
+
+  .scenario-selector-container {
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .scenario-tab {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .requirements-layout {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .requirements-column {
+    height: 320px;
+  }
 }
+

@@ -174,11 +174,146 @@
       </div>
     </section>
 
-    <!-- Slide 5: Simulador FinOps Interativo -->
-    <section class="slide" id="slide-simulador" data-slide="5">
+    <!-- Slide 5: Mapeamento de Requisitos -->
+    <section class="slide" id="slide-requisitos" data-slide="5">
+      <div class="slide-content">
+        <h2 class="slide-title">Demanda vs. Arquitetura Proposta</h2>
+        <p class="slide-desc">Como a solução atende de forma nativa e segura os macro-requisitos solicitados.</p>
+
+        <div class="requirements-layout">
+          <!-- Coluna 1: Problemas & Necessidades -->
+          <div class="requirements-column glass-card border-fabric">
+            <h3 class="column-title"> Requisitos </h3>
+            <div class="requirements-scroll-container">
+              <div class="req-item">
+                <span class="req-badge status-issue">Problema</span>
+                <strong>Bases Descentralizadas</strong>
+                <p>Múltiplas planilhas Excel com diversas abas distribuídas por gerência, armazenadas de forma dispersa
+                  em SharePoint e OneDrive.</p>
+              </div>
+              <div class="req-item">
+                <span class="req-badge status-issue">Problema</span>
+                <strong>Manutenção Estrutural</strong>
+                <p>Alterações estruturais (como inclusão de colunas) exigem ajustes manuais repetitivos em múltiplos
+                  arquivos, quebrando relatórios.</p>
+              </div>
+              <div class="req-item">
+                <span class="req-badge status-issue">Problema</span>
+                <strong>Inconsistência de Dados</strong>
+                <p>Falta de validação gera replicação de estruturas com alto risco de divergência entre as bases que
+                  alimentam os relatórios.</p>
+              </div>
+              <div class="req-item">
+                <span class="req-badge status-issue">Problema</span>
+                <strong>Dependência Direta</strong>
+                <p>Dashboards conectados diretamente a arquivos Excel como fonte primária, gerando lentidão e falhas
+                  frequentes de atualização.</p>
+              </div>
+              <div class="req-item">
+                <span class="req-badge status-need">LGPD</span>
+                <strong>Controle por Perfil</strong>
+                <p>Restringir a visualização de dados e o controle de acesso conforme perfis (Analista, Supervisor,
+                  Coordenador, Gerente e Analytics) e áreas.</p>
+              </div>
+              <div class="req-item">
+                <span class="req-badge status-need">LGPD</span>
+                <strong>Rastreabilidade</strong>
+                <p>Exigência de log de auditoria completo para identificar quem alterou, quando alterou e qual dado foi
+                  modificado.</p>
+              </div>
+              <div class="req-item">
+                <span class="req-badge status-need">Performance</span>
+                <strong>Concorrência</strong>
+                <p>Garantia de alta performance e disponibilidade ininterrupta para múltiplos usuários consultando e
+                  atualizando dados simultaneamente.</p>
+              </div>
+              <div class="req-item">
+                <span class="req-badge status-need">Governança</span>
+                <strong>Alterações Estruturais</strong>
+                <p>Controle de permissões para modificação da estrutura das bases restrito de forma exclusiva ao time de
+                  Analytics.</p>
+              </div>
+              <div class="req-item">
+                <span class="req-badge status-need">Integração</span>
+                <strong>Integração com Sistemas</strong>
+                <p>Sincronização nativa com Active Directory (AD), SharePoint Lists e integrações potenciais com Totvs,
+                  Vulcano e Docusign.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Coluna 2: Solução Proposta/Provisionada -->
+          <div class="requirements-column glass-card border-azure">
+            <h3 class="column-title"> Solução Técnica </h3>
+            <div class="requirements-scroll-container">
+              <div class="req-item">
+                <span class="req-badge status-solution">Entrada Familiar</span>
+                <strong>Foco em Adoção (SharePoint/OneDrive)</strong>
+                <p>As equipes continuam utilizando a interface conhecida do Excel armazenada no SharePoint/OneDrive,
+                  garantindo zero fricção e rejeição.</p>
+              </div>
+              <div class="req-item">
+                <span class="req-badge status-solution">Consolidação</span>
+                <strong>Fabric Data Factory Pipelines</strong>
+                <p>Ingestão automatizada de arquivos das áreas para OneLake. O pipeline monitora e valida a estrutura,
+                  travando cargas inconsistentes.</p>
+              </div>
+              <div class="req-item">
+                <span class="req-badge status-solution">Banco Único</span>
+                <strong>Azure SQL Serverless / Delta Tables</strong>
+                <p>Consolidação em banco relacional sob demanda. Resolve a duplicidade, estabiliza a modelagem e suporta
+                  alta concorrência com performance.</p>
+              </div>
+              <div class="req-item">
+                <span class="req-badge status-solution">Segurança</span>
+                <strong>Azure AD & Row-Level Security (RLS)</strong>
+                <p>Autenticação via AD e filtragem automática de linhas no banco e no Power BI. O usuário vê apenas os
+                  dados vinculados à sua área/perfil.</p>
+              </div>
+              <div class="req-item">
+                <span class="req-badge status-solution">Auditoria</span>
+                <strong>Versionamento & Logs de Pipelines</strong>
+                <p>A correlação entre o histórico nativo do SharePoint e logs de processamento no Azure assegura o
+                  rastreio completo de edições.</p>
+              </div>
+              <div class="req-item">
+                <span class="req-badge status-solution">Governança</span>
+                <strong>Azure DevOps & Permissões RBAC</strong>
+                <p>Toda a modelagem do banco e relatórios fica no Git do DevOps. A publicação é automatizada, bloqueando
+                  edições diretas em produção.</p>
+              </div>
+              <div class="req-item">
+                <span class="req-badge status-solution">Integrações</span>
+                <strong>Azure Functions Serverless</strong>
+                <p>Microsserviços serverless baseados em eventos conectam sistemas como Totvs, Vulcano e Docusign com
+                  segurança
+                  via chaves no Azure Key Vault.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 6: Simulador FinOps Interativo -->
+    <section class="slide" id="slide-simulador" data-slide="6">
       <div class="slide-content">
         <h2 class="slide-title">Provisionamento de Custos</h2>
-        <p class="slide-desc">Projete a infraestrutura financeira.</p>
+        <p class="slide-desc">Compare cenários de viabilidade e projete a infraestrutura financeira.</p>
+
+        <!-- Seletor de Cenários -->
+        <div class="scenario-selector-container">
+          <button type="button" class="scenario-tab active" id="btn-scenario-microsoft"
+            onclick="setScenario('microsoft')">
+            Soluções Microsoft
+          </button>
+          <button type="button" class="scenario-tab" id="btn-scenario-interno" onclick="setScenario('interno')">
+            Desenvolvimento Interno
+          </button>
+          <button type="button" class="scenario-tab" id="btn-scenario-externo" onclick="setScenario('externo')">
+            Desenvolvimento Externo
+          </button>
+        </div>
 
         <div class="simulator-layout">
           <!-- Controles do Simulador -->
@@ -187,84 +322,119 @@
             <div class="currency-toggle-container">
               <span class="toggle-label">Visualizar em:</span>
               <div class="toggle-buttons">
-                <button type="button" class="toggle-btn active" id="btn-usd" onclick="setCurrency('USD')">USD ($)</button>
+                <button type="button" class="toggle-btn active" id="btn-usd" onclick="setCurrency('USD')">USD
+                  ($)</button>
                 <button type="button" class="toggle-btn" id="btn-brl" onclick="setCurrency('BRL')">BRL (R$)</button>
               </div>
             </div>
 
-            <div class="controls-grid">
-              <!-- Regime de Funcionamento -->
-              <div class="control-group">
-                <label for="operation-regime">Regime de Operação:</label>
-                <select id="operation-regime" onchange="calculateCosts()">
-                  <option value="24-7" selected>24/7 (Sempre Ativo - 730h)</option>
-                  <option value="5-12">5/12 (Seg-Sex, 12h/dia - 240h)</option>
-                  <option value="5-10">5/10 (Seg-Sex, 10h/dia - 200h)</option>
-                </select>
-              </div>
+            <!-- Controles Microsoft -->
+            <div id="controls-microsoft" class="controls-grid-container">
+              <div class="controls-grid">
+                <!-- Regime de Funcionamento -->
+                <div class="control-group">
+                  <label for="operation-regime">Regime de Operação:</label>
+                  <select id="operation-regime" onchange="calculateCosts()">
+                    <option value="24-7" selected>24/7 (Sempre Ativo - 730h)</option>
+                    <option value="5-12">5/12 (Seg-Sex, 12h/dia - 240h)</option>
+                    <option value="5-10">5/10 (Seg-Sex, 10h/dia - 200h)</option>
+                  </select>
+                </div>
 
-              <!-- Fabric Compute -->
-              <div class="control-group">
-                <label for="fabric-sku">Capacidade Fabric (Compute):</label>
-                <select id="fabric-sku" onchange="calculateCosts()">
-                  <option value="F2-PAYG">F2 (Pay-As-You-Go)</option>
-                  <option value="F2-RES">F2 (Reservado 1 ano)</option>
-                  <option value="F4-PAYG">F4 (Pay-As-You-Go)</option>
-                  <option value="F4-RES">F4 (Reservado 1 ano)</option>
-                  <option value="F8-RES" selected>F8 (Reservado 1 ano)</option>
-                  <option value="F64-RES">F64 (Reservado - Isenta Power BI Pro)</option>
-                </select>
-              </div>
+                <!-- Fabric Compute -->
+                <div class="control-group">
+                  <label for="fabric-sku">Capacidade Fabric (Compute):</label>
+                  <select id="fabric-sku" onchange="calculateCosts()">
+                    <option value="F2-PAYG">F2 (Pay-As-You-Go)</option>
+                    <option value="F2-RES">F2 (Reservado 1 ano)</option>
+                    <option value="F4-PAYG">F4 (Pay-As-You-Go)</option>
+                    <option value="F4-RES">F4 (Reservado 1 ano)</option>
+                    <option value="F8-RES" selected>F8 (Reservado 1 ano)</option>
+                    <option value="F64-RES">F64 (Reservado - Isenta Power BI Pro)</option>
+                  </select>
+                </div>
 
-              <!-- OneLake Storage -->
-              <div class="control-group">
-                <label for="storage-gb">OneLake Storage: <span id="storage-val">1000</span> GB</label>
-                <input type="range" id="storage-gb" min="10" max="10000" step="50" value="1000"
-                  oninput="updateStorageLabel(this.value)">
-              </div>
+                <!-- OneLake Storage -->
+                <div class="control-group">
+                  <label for="storage-gb">OneLake Storage: <span id="storage-val">1000</span> GB</label>
+                  <input type="range" id="storage-gb" min="10" max="10000" step="50" value="1000"
+                    oninput="updateStorageLabel(this.value)">
+                </div>
 
-              <!-- Azure SQL Serverless -->
-              <div class="control-group">
-                <label for="azure-sql">Azure SQL (Serverless):</label>
-                <select id="azure-sql" onchange="calculateCosts()">
-                  <option value="DEV-PAUSE">Dev/Stg (Serverless c/ Auto-Pause)</option>
-                  <option value="PROD-LIGHT" selected>Produção Light (vCores Sob Demanda)</option>
-                  <option value="PROD-HIGH">Produção Heavy (Escala Rápida)</option>
-                </select>
-              </div>
+                <!-- Azure SQL Serverless -->
+                <div class="control-group">
+                  <label for="azure-sql">Azure SQL (Serverless):</label>
+                  <select id="azure-sql" onchange="calculateCosts()">
+                    <option value="DEV-PAUSE">Dev/Stg (Serverless c/ Auto-Pause)</option>
+                    <option value="PROD-LIGHT" selected>Produção Light (vCores Sob Demanda)</option>
+                    <option value="PROD-HIGH">Produção Heavy (Escala Rápida)</option>
+                  </select>
+                </div>
 
-              <!-- Azure Functions -->
-              <div class="control-group">
-                <label for="azure-functions">Azure Functions:</label>
-                <select id="azure-functions" onchange="calculateCosts()">
-                  <option value="LIGHT" selected>Consumo Light (1M exec/mês - Grátis)</option>
-                  <option value="MEDIUM">Consumo Medium (10M exec/mês)</option>
-                  <option value="HEAVY">Consumo Heavy (50M exec/mês)</option>
-                </select>
-              </div>
+                <!-- Azure Functions -->
+                <div class="control-group">
+                  <label for="azure-functions">Azure Functions:</label>
+                  <select id="azure-functions" onchange="calculateCosts()">
+                    <option value="LIGHT" selected>Consumo Light (1M exec/mês - Grátis)</option>
+                    <option value="MEDIUM">Consumo Medium (10M exec/mês)</option>
+                    <option value="HEAVY">Consumo Heavy (50M exec/mês)</option>
+                  </select>
+                </div>
 
-              <!-- Azure Key Vault & Resource Manager -->
-              <div class="control-group">
-                <label>Segurança & Gestão:</label>
-                <div class="fixed-costs-info">
-                  <span>Key Vault: <strong id="kv-display-cost">$5.00/mês</strong></span> |
-                  <span>ARM: <strong class="green-text">Grátis</strong></span>
+                <!-- Azure Key Vault & Resource Manager -->
+                <div class="control-group">
+                  <label>Segurança & Gestão:</label>
+                  <div class="fixed-costs-info">
+                    <span>Key Vault: <strong id="kv-display-cost">$5.00/mês</strong></span> |
+                    <span>ARM: <strong class="green-text">Grátis</strong></span>
+                  </div>
+                </div>
+
+                <!-- Power BI Pro Users -->
+                <div class="control-group">
+                  <label for="pbi-users">Power BI Pro (Usuários): <span id="pbi-users-val">5</span></label>
+                  <input type="range" id="pbi-users" min="0" max="50" step="1" value="5"
+                    oninput="updatePbiUsersLabel(this.value)">
+                </div>
+
+                <!-- Azure DevOps Users -->
+                <div class="control-group">
+                  <label for="devops-users">Azure DevOps (Usuários): <span id="users-val">5</span></label>
+                  <input type="range" id="devops-users" min="0" max="50" step="1" value="5"
+                    oninput="updateUsersLabel(this.value)">
+                  <div class="help-text">Custo adicional por usuário (organização já ultrapassou os 5 gratuitos).</div>
                 </div>
               </div>
+            </div>
 
-              <!-- Power BI Pro Users -->
-              <div class="control-group">
-                <label for="pbi-users">Power BI Pro (Usuários): <span id="pbi-users-val">5</span></label>
-                <input type="range" id="pbi-users" min="0" max="50" step="1" value="5"
-                  oninput="updatePbiUsersLabel(this.value)">
-              </div>
+            <!-- Controles Desenvolvimento Interno / Externo -->
+            <div id="controls-development" class="controls-grid-container" style="display: none;">
+              <div class="controls-grid">
+                <!-- Complexidade -->
+                <div class="control-group">
+                  <label for="dev-complexity">Complexidade do Escopo:</label>
+                  <select id="dev-complexity" onchange="calculateCosts()">
+                    <option value="simple">Simples (Foco em BI / Dashboards)</option>
+                    <option value="medium">Média (BI + ETL / Ingestão Básica)</option>
+                    <option value="enterprise" selected>Completa (Arquitetura Mapeada)</option>
+                  </select>
+                </div>
 
-              <!-- Azure DevOps Users -->
-              <div class="control-group">
-                <label for="devops-users">Azure DevOps (Usuários): <span id="users-val">5</span></label>
-                <input type="range" id="devops-users" min="0" max="50" step="1" value="5"
-                  oninput="updateUsersLabel(this.value)">
-                <div class="help-text">Custo adicional por usuário (organização já ultrapassou os 5 gratuitos).</div>
+                <!-- Tamanho da Equipe -->
+                <div class="control-group">
+                  <label for="dev-team-size">Equipe (Devs/Engenheiros): <span id="dev-team-size-val">3</span></label>
+                  <input type="range" id="dev-team-size" min="1" max="10" step="1" value="3"
+                    oninput="updateDevTeamSizeLabel(this.value)">
+                </div>
+
+                <!-- Custo por Profissional -->
+                <div class="control-group">
+                  <label for="dev-salary">Custo Médio p/ Profissional: <span id="dev-salary-val">R$
+                      15.000</span></label>
+                  <input type="range" id="dev-salary" min="5000" max="25000" step="1000" value="15000"
+                    oninput="updateDevSalaryLabel(this.value)">
+                  <div class="help-text">Considera salários, encargos trabalhistas e infraestrutura física.</div>
+                </div>
               </div>
             </div>
 
@@ -272,15 +442,21 @@
 
           <!-- Resultados do Simulador -->
           <div class="simulator-results glass-card">
-            <h4>Custo Mensal Estimado</h4>
+            <h4 id="results-title">Custo Mensal Estimado</h4>
 
             <div class="cost-summary">
               <span class="currency" id="cost-currency-symbol">$</span>
               <span class="total-cost" id="total-cost-val">681.33</span>
-              <span class="period">/mês</span>
+              <span class="period" id="results-period">/mês</span>
             </div>
 
-            <div class="cost-breakdown">
+            <!-- Detalhamento Microsoft -->
+            <div id="breakdown-microsoft" class="cost-breakdown">
+              <div class="breakdown-item">
+                <span>Tempo de Implementação:</span>
+                <span id="breakdown-microsoft-time" class="green-text" style="font-weight: 700;">Disponibilidade
+                  Imediata</span>
+              </div>
               <div class="breakdown-item">
                 <span>Fabric Compute:</span>
                 <span id="breakdown-fabric-compute">$625.33</span>
@@ -311,6 +487,26 @@
               </div>
             </div>
 
+            <!-- Detalhamento Desenvolvimento -->
+            <div id="breakdown-development" class="cost-breakdown" style="display: none;">
+              <div class="breakdown-item">
+                <span>Tempo Estimado:</span>
+                <span id="breakdown-dev-time" class="orange-text" style="font-weight: 700;">9 meses</span>
+              </div>
+              <div class="breakdown-item">
+                <span>Esforço de Equipe:</span>
+                <span id="breakdown-dev-effort">27 Homens-Mês</span>
+              </div>
+              <div id="row-dev-monthly" class="breakdown-item">
+                <span>Custo Mensal de Equipe:</span>
+                <span id="breakdown-dev-monthly-cost">R$ 45.000,00</span>
+              </div>
+              <div class="breakdown-item">
+                <span>Custo de Oportunidade:</span>
+                <span id="breakdown-dev-opportunity" class="orange-text">Alto (Plataforma offline no período)</span>
+              </div>
+            </div>
+
             <div class="finops-badge" id="finops-badge-text">
               <strong>Estratégia Anti-Sobreposição Ativa:</strong> Nenhuma ferramenta duplicada encontrada no escopo
               simulado.
@@ -320,8 +516,8 @@
       </div>
     </section>
 
-    <!-- Slide 6: Próximos Passos -->
-    <section class="slide" id="slide-conclusao" data-slide="6">
+    <!-- Slide 7: Próximos Passos -->
+    <section class="slide" id="slide-conclusao" data-slide="7">
       <div class="slide-content centered-content">
         <div class="badge border-azure">Sucesso Operacional</div>
         <h2>Próximos Passos & Decisões</h2>
@@ -363,7 +559,7 @@
 
     <div class="footer-controls">
       <button class="nav-btn" id="prev-btn" onclick="navigateSlide(-1)">◀ Voltar</button>
-      <div id="slide-indicator">1 / 6</div>
+      <div id="slide-indicator">1 / 7</div>
       <button class="nav-btn" id="next-btn" onclick="navigateSlide(1)">Avançar ▶</button>
     </div>
   </footer>

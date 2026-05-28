@@ -2,8 +2,9 @@
 // STATE MANAGEMENT
 // ==========================================================================
 let currentSlide = 1;
-const totalSlides = 6;
+const totalSlides = 7;
 let currentCurrency = 'USD';
+let currentScenario = 'microsoft';
 const EXCHANGE_RATE = 5.15;
 
 // Cost lookup tables (in USD)
@@ -140,129 +141,292 @@ function updateUsersLabel(value) {
   calculateCosts();
 }
 
+function updateDevTeamSizeLabel(value) {
+  const label = document.getElementById('dev-team-size-val');
+  if (label) label.textContent = value;
+  calculateCosts();
+}
+
+// Just triggers calculateCosts which formats and updates the label inside
+function updateDevSalaryLabel(value) {
+  calculateCosts();
+}
+
+function setScenario(scenario) {
+  currentScenario = scenario;
+
+  const tabMicrosoft = document.getElementById('btn-scenario-microsoft');
+  const tabInterno = document.getElementById('btn-scenario-interno');
+  const tabExterno = document.getElementById('btn-scenario-externo');
+
+  if (tabMicrosoft) tabMicrosoft.classList.toggle('active', scenario === 'microsoft');
+  if (tabInterno) tabInterno.classList.toggle('active', scenario === 'interno');
+  if (tabExterno) tabExterno.classList.toggle('active', scenario === 'externo');
+
+  const ctrlMicrosoft = document.getElementById('controls-microsoft');
+  const ctrlDevelopment = document.getElementById('controls-development');
+
+  if (ctrlMicrosoft) ctrlMicrosoft.style.display = (scenario === 'microsoft') ? 'block' : 'none';
+  if (ctrlDevelopment) ctrlDevelopment.style.display = (scenario !== 'microsoft') ? 'block' : 'none';
+
+  const bkdMicrosoft = document.getElementById('breakdown-microsoft');
+  const bkdDevelopment = document.getElementById('breakdown-development');
+
+  if (bkdMicrosoft) bkdMicrosoft.style.display = (scenario === 'microsoft') ? 'flex' : 'none';
+  if (bkdDevelopment) bkdDevelopment.style.display = (scenario !== 'microsoft') ? 'flex' : 'none';
+
+  calculateCosts();
+}
+
 function calculateCosts() {
   try {
-    const regimeEl = document.getElementById('operation-regime');
-    const fabricSkuEl = document.getElementById('fabric-sku');
-    const storageGbEl = document.getElementById('storage-gb');
-    const azureSqlEl = document.getElementById('azure-sql');
-    const azureFunctionsEl = document.getElementById('azure-functions');
-    const pbiUsersEl = document.getElementById('pbi-users');
-    const devopsUsersEl = document.getElementById('devops-users');
-
-    if (!regimeEl || !fabricSkuEl || !storageGbEl || !azureSqlEl || !azureFunctionsEl || !pbiUsersEl || !devopsUsersEl) {
-      console.warn("Simulator inputs are not fully rendered yet.");
-      return;
-    }
-
-    const regime = regimeEl.value;
-    const fabricSku = fabricSkuEl.value;
-    const storageGb = parseFloat(storageGbEl.value) || 0;
-    const azureSql = azureSqlEl.value;
-    const azureFunctions = azureFunctionsEl.value;
-    const pbiUsers = parseInt(pbiUsersEl.value) || 0;
-    const devopsUsers = parseInt(devopsUsersEl.value) || 0;
-
-    // Determine operational hours
-    let hours = 730;
-    if (regime === '5-12') hours = 240;
-    if (regime === '5-10') hours = 200;
-
-    // 1. Fabric Compute
-    let fabricComputeCost = 0;
-    const skuInfo = FABRIC_SKU_PRICES[fabricSku];
-    if (!skuInfo) {
-      console.warn(`SKU info for ${fabricSku} not found.`);
-      return;
-    }
-    if (skuInfo.type === 'PAYG') {
-      fabricComputeCost = skuInfo.hourly * hours;
-    } else {
-      fabricComputeCost = skuInfo.monthly;
-    }
-
-    // 2. OneLake Storage
-    const oneLakeStorageCost = storageGb * ONELAKE_PRICE_PER_GB;
-
-    // 3. Azure SQL Cost (Serverless scale and regime dependent)
-    const azureSqlCost = (AZURE_SQL_PRICES[azureSql] && AZURE_SQL_PRICES[azureSql][regime]) || 0;
-
-    // 4. Azure Functions Cost
-    const functionsCost = (AZURE_FUNCTIONS_PRICES[azureFunctions] && AZURE_FUNCTIONS_PRICES[azureFunctions][regime]) || 0;
-
-    // 5. Azure Key Vault (flat USD 5.00/month)
-    const keyVaultCost = 5.00;
-
-    // 6. Power BI Pro (USD 10.00/user, waived if F64 capacity selected)
-    let pbiCost = 0;
-    if (fabricSku !== 'F64-RES') {
-      pbiCost = pbiUsers * 10.00;
-    }
-
-    // 7. Azure DevOps (USD 6.00/user - all paid as org already uses 5 free licenses)
-    const devopsCost = devopsUsers * 6.00;
-
-    // Raw Total in USD
-    const totalCostUSD = fabricComputeCost + oneLakeStorageCost + azureSqlCost + functionsCost + keyVaultCost + pbiCost + devopsCost;
-
-    // Apply exchange rate if BRL
     const rate = (currentCurrency === 'BRL') ? EXCHANGE_RATE : 1.0;
     const symbol = (currentCurrency === 'BRL') ? 'R$ ' : '$';
 
-    const fabricComputeCostCurr = fabricComputeCost * rate;
-    const oneLakeStorageCostCurr = oneLakeStorageCost * rate;
-    const azureSqlCostCurr = azureSqlCost * rate;
-    const functionsCostCurr = functionsCost * rate;
-    const keyVaultCostCurr = keyVaultCost * rate;
-    const pbiCostCurr = pbiCost * rate;
-    const devopsCostCurr = devopsCost * rate;
-    const totalCostCurr = totalCostUSD * rate;
+    const resultsTitleEl = document.getElementById('results-title');
+    const resultsPeriodEl = document.getElementById('results-period');
+    const finopsBadge = document.getElementById('finops-badge-text');
 
-    // Update UI Elements
+    if (currentScenario === 'microsoft') {
+      if (resultsTitleEl) resultsTitleEl.textContent = 'Custo Mensal Estimado';
+      if (resultsPeriodEl) resultsPeriodEl.textContent = '/mês';
+
+      const regimeEl = document.getElementById('operation-regime');
+      const fabricSkuEl = document.getElementById('fabric-sku');
+      const storageGbEl = document.getElementById('storage-gb');
+      const azureSqlEl = document.getElementById('azure-sql');
+      const azureFunctionsEl = document.getElementById('azure-functions');
+      const pbiUsersEl = document.getElementById('pbi-users');
+      const devopsUsersEl = document.getElementById('devops-users');
+
+      if (!regimeEl || !fabricSkuEl || !storageGbEl || !azureSqlEl || !azureFunctionsEl || !pbiUsersEl || !devopsUsersEl) {
+        console.warn("Simulator inputs are not fully rendered yet.");
+        return;
+      }
+
+      const regime = regimeEl.value;
+      const fabricSku = fabricSkuEl.value;
+      const storageGb = parseFloat(storageGbEl.value) || 0;
+      const azureSql = azureSqlEl.value;
+      const azureFunctions = azureFunctionsEl.value;
+      const pbiUsers = parseInt(pbiUsersEl.value) || 0;
+      const devopsUsers = parseInt(devopsUsersEl.value) || 0;
+
+      // Determine operational hours
+      let hours = 730;
+      if (regime === '5-12') hours = 240;
+      if (regime === '5-10') hours = 200;
+
+      // 1. Fabric Compute
+      let fabricComputeCost = 0;
+      const skuInfo = FABRIC_SKU_PRICES[fabricSku];
+      if (!skuInfo) {
+        console.warn(`SKU info for ${fabricSku} not found.`);
+        return;
+      }
+      if (skuInfo.type === 'PAYG') {
+        fabricComputeCost = skuInfo.hourly * hours;
+      } else {
+        fabricComputeCost = skuInfo.monthly;
+      }
+
+      // 2. OneLake Storage
+      const oneLakeStorageCost = storageGb * ONELAKE_PRICE_PER_GB;
+
+      // 3. Azure SQL Cost (Serverless scale and regime dependent)
+      const azureSqlCost = (AZURE_SQL_PRICES[azureSql] && AZURE_SQL_PRICES[azureSql][regime]) || 0;
+
+      // 4. Azure Functions Cost
+      const functionsCost = (AZURE_FUNCTIONS_PRICES[azureFunctions] && AZURE_FUNCTIONS_PRICES[azureFunctions][regime]) || 0;
+
+      // 5. Azure Key Vault (flat USD 5.00/month)
+      const keyVaultCost = 5.00;
+
+      // 6. Power BI Pro (USD 10.00/user, waived if F64 capacity selected)
+      let pbiCost = 0;
+      if (fabricSku !== 'F64-RES') {
+        pbiCost = pbiUsers * 10.00;
+      }
+
+      // 7. Azure DevOps (USD 6.00/user - all paid as org already uses 5 free licenses)
+      const devopsCost = devopsUsers * 6.00;
+
+      // Raw Total in USD
+      const totalCostUSD = fabricComputeCost + oneLakeStorageCost + azureSqlCost + functionsCost + keyVaultCost + pbiCost + devopsCost;
+      const totalCostCurr = totalCostUSD * rate;
+
+      // Conversions for UI
+      const fabricComputeCostCurr = fabricComputeCost * rate;
+      const oneLakeStorageCostCurr = oneLakeStorageCost * rate;
+      const azureSqlCostCurr = azureSqlCost * rate;
+      const functionsCostCurr = functionsCost * rate;
+      const keyVaultCostCurr = keyVaultCost * rate;
+      const pbiCostCurr = pbiCost * rate;
+      const devopsCostCurr = devopsCost * rate;
+
+      const elFabric = document.getElementById('breakdown-fabric-compute');
+      const elStorage = document.getElementById('breakdown-onelake-storage');
+      const elSql = document.getElementById('breakdown-azure-sql');
+      const elFunctions = document.getElementById('breakdown-functions');
+      const elKv = document.getElementById('breakdown-key-vault');
+      const elPbi = document.getElementById('breakdown-pbi');
+      const elDevops = document.getElementById('breakdown-devops');
+
+      if (elFabric) elFabric.textContent = `${symbol}${fabricComputeCostCurr.toFixed(2)}`;
+      if (elStorage) elStorage.textContent = `${symbol}${oneLakeStorageCostCurr.toFixed(2)}`;
+      if (elSql) elSql.textContent = `${symbol}${azureSqlCostCurr.toFixed(2)}`;
+      if (elFunctions) elFunctions.textContent = `${symbol}${functionsCostCurr.toFixed(2)}`;
+      if (elKv) elKv.textContent = `${symbol}${keyVaultCostCurr.toFixed(2)}`;
+      if (elPbi) elPbi.textContent = `${symbol}${pbiCostCurr.toFixed(2)}`;
+      if (elDevops) elDevops.textContent = `${symbol}${devopsCostCurr.toFixed(2)}`;
+
+      // Update Key Vault static cost in controls group
+      const kvDisplay = document.getElementById('kv-display-cost');
+      if (kvDisplay) {
+        kvDisplay.textContent = `${symbol}${keyVaultCostCurr.toFixed(2)}/mês`;
+      }
+
+      animateCounter('total-cost-val', totalCostCurr);
+
+      // Update FinOps dynamic message
+      if (finopsBadge) {
+        let msg = "";
+        if (fabricSku === 'F64-RES' && pbiUsers > 0) {
+          msg = `<strong>Estratégia FinOps Ativa:</strong> Licenças Power BI Pro isentas devido ao uso do Fabric F64-RES.`;
+        } else if ((regime === '5-12' || regime === '5-10') && skuInfo.type === 'PAYG') {
+          const savings = Math.round((1 - (hours / 730)) * 100);
+          msg = `<strong>Otimização de Escala Ativa:</strong> Pausa automática de computação Fabric PAYG ativada fora do horário comercial (Economia de ~${savings}% em compute).`;
+        } else if ((regime === '5-12' || regime === '5-10') && skuInfo.type === 'RES') {
+          msg = `<strong>Alerta FinOps:</strong> Capacidades Reservadas (RES) possuem custos fixos 24/7. Considere usar Pay-As-You-Go para habilitar a pausa automática no regime ${regime}.`;
+        } else {
+          msg = `<strong>Estratégia Anti-Sobreposição Ativa:</strong> Componentes integrados e dimensionados sob demanda (SQL Serverless + Functions) sem redundância.`;
+        }
+        finopsBadge.innerHTML = msg;
+      }
+
+    } else {
+      // Desenvolvimento Interno / Externo
+      if (resultsTitleEl) resultsTitleEl.textContent = 'Investimento Total Estimado';
+      if (resultsPeriodEl) resultsPeriodEl.textContent = ' (projeto)';
+
+      const devComplexityEl = document.getElementById('dev-complexity');
+      const devTeamSizeEl = document.getElementById('dev-team-size');
+      const devSalaryEl = document.getElementById('dev-salary');
+
+      if (!devComplexityEl || !devTeamSizeEl || !devSalaryEl) {
+        console.warn("Development inputs are not fully rendered yet.");
+        return;
+      }
+
+      const complexity = devComplexityEl.value;
+      const teamSize = parseInt(devTeamSizeEl.value) || 0;
+      const salaryBRL = parseFloat(devSalaryEl.value) || 0;
+
+      // Format developer salary slider label dynamically
+      const salaryLabel = document.getElementById('dev-salary-val');
+      if (salaryLabel) {
+        if (currentCurrency === 'BRL') {
+          salaryLabel.textContent = `R$ ${salaryBRL.toLocaleString('pt-BR')}`;
+        } else {
+          const salaryUSD = Math.round(salaryBRL / EXCHANGE_RATE);
+          salaryLabel.textContent = `$ ${salaryUSD.toLocaleString('en-US')}`;
+        }
+      }
+
+      // Calculate time (months)
+      let baseMonths = 12;
+      if (complexity === 'simple') baseMonths = 3;
+      else if (complexity === 'medium') baseMonths = 6;
+
+      const devTime = Math.max(3, Math.round((baseMonths * 1.5) / Math.sqrt(teamSize)));
+      const effort = teamSize * devTime;
+
+      let totalCostBRL = 0;
+      let displayCostVal = 0;
+
+      const rowDevMonthly = document.getElementById('row-dev-monthly');
+      const labelDevMonthly = rowDevMonthly ? rowDevMonthly.querySelector('span:first-child') : null;
+      const valDevMonthly = document.getElementById('breakdown-dev-monthly-cost');
+
+      if (currentScenario === 'interno') {
+        // Custo total interno = devs * salário * tempo
+        totalCostBRL = teamSize * salaryBRL * devTime;
+        
+        // Show team monthly cost
+        if (rowDevMonthly) rowDevMonthly.style.display = 'flex';
+        if (labelDevMonthly) labelDevMonthly.textContent = "Custo Mensal de Equipe:";
+        
+        const monthlyCostBRL = teamSize * salaryBRL;
+        if (valDevMonthly) {
+          if (currentCurrency === 'BRL') {
+            valDevMonthly.textContent = `R$ ${monthlyCostBRL.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+          } else {
+            const monthlyCostUSD = monthlyCostBRL / EXCHANGE_RATE;
+            valDevMonthly.textContent = `$ ${monthlyCostUSD.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+          }
+        }
+      } else {
+        // Custo total externo = R$ 500.000 fixo
+        totalCostBRL = 500000;
+        
+        // Show fixed project cost instead of monthly
+        if (rowDevMonthly) rowDevMonthly.style.display = 'flex';
+        if (labelDevMonthly) labelDevMonthly.textContent = "Investimento Fixo:";
+        
+        if (valDevMonthly) {
+          if (currentCurrency === 'BRL') {
+            valDevMonthly.textContent = `R$ ${totalCostBRL.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+          } else {
+            const totalCostUSD = totalCostBRL / EXCHANGE_RATE;
+            valDevMonthly.textContent = `$ ${totalCostUSD.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+          }
+        }
+      }
+
+      // Convert total project cost to current currency
+      if (currentCurrency === 'BRL') {
+        displayCostVal = totalCostBRL;
+      } else {
+        displayCostVal = totalCostBRL / EXCHANGE_RATE;
+      }
+
+      // Update Breakdown details
+      const elDevTime = document.getElementById('breakdown-dev-time');
+      const elDevEffort = document.getElementById('breakdown-dev-effort');
+      const elDevOpportunity = document.getElementById('breakdown-dev-opportunity');
+
+      if (elDevTime) elDevTime.textContent = `${devTime} meses`;
+      if (elDevEffort) elDevEffort.textContent = `${effort} Homens-Mês`;
+      
+      if (elDevOpportunity) {
+        if (complexity === 'simple') {
+          elDevOpportunity.textContent = 'Baixo/Médio (Projeto simples)';
+          elDevOpportunity.className = 'green-text';
+        } else if (complexity === 'medium') {
+          elDevOpportunity.textContent = 'Médio (Time-to-market comprometido)';
+          elDevOpportunity.className = 'orange-text';
+        } else {
+          elDevOpportunity.textContent = 'Crítico (Atraso na governança de dados)';
+          elDevOpportunity.className = 'orange-text';
+        }
+      }
+
+      animateCounter('total-cost-val', displayCostVal);
+
+      // Update FinOps / Viability badge
+      if (finopsBadge) {
+        if (currentScenario === 'interno') {
+          finopsBadge.innerHTML = `<strong>Desenvolvimento Interno:</strong> Criação sob demanda leva aproximadamente <strong>${devTime} meses</strong>. Exige contratação/alocação e gera manutenção interna perpétua.`;
+        } else {
+          finopsBadge.innerHTML = `<strong>Desenvolvimento Externo:</strong> Terceirização requer investimento único aproximado de <strong>R$ 500.000</strong> e prazos de homologação semelhantes a <strong>${devTime} meses</strong>.`;
+        }
+      }
+    }
+
+    // Update symbol in UI
     const symbolEl = document.getElementById('cost-currency-symbol');
     if (symbolEl) symbolEl.textContent = symbol.trim();
 
-    const elFabric = document.getElementById('breakdown-fabric-compute');
-    const elStorage = document.getElementById('breakdown-onelake-storage');
-    const elSql = document.getElementById('breakdown-azure-sql');
-    const elFunctions = document.getElementById('breakdown-functions');
-    const elKv = document.getElementById('breakdown-key-vault');
-    const elPbi = document.getElementById('breakdown-pbi');
-    const elDevops = document.getElementById('breakdown-devops');
-
-    if (elFabric) elFabric.textContent = `${symbol}${fabricComputeCostCurr.toFixed(2)}`;
-    if (elStorage) elStorage.textContent = `${symbol}${oneLakeStorageCostCurr.toFixed(2)}`;
-    if (elSql) elSql.textContent = `${symbol}${azureSqlCostCurr.toFixed(2)}`;
-    if (elFunctions) elFunctions.textContent = `${symbol}${functionsCostCurr.toFixed(2)}`;
-    if (elKv) elKv.textContent = `${symbol}${keyVaultCostCurr.toFixed(2)}`;
-    if (elPbi) elPbi.textContent = `${symbol}${pbiCostCurr.toFixed(2)}`;
-    if (elDevops) elDevops.textContent = `${symbol}${devopsCostCurr.toFixed(2)}`;
-
-    // Update Key Vault static cost in controls group
-    const kvDisplay = document.getElementById('kv-display-cost');
-    if (kvDisplay) {
-      kvDisplay.textContent = `${symbol}${keyVaultCostCurr.toFixed(2)}/mês`;
-    }
-
-    // Update Total cost with smooth count animation
-    animateCounter('total-cost-val', totalCostCurr);
-
-    // Update FinOps dynamic message
-    const finopsBadge = document.getElementById('finops-badge-text');
-    if (finopsBadge) {
-      let msg = "";
-      if (fabricSku === 'F64-RES' && pbiUsers > 0) {
-        msg = `<strong>Estratégia FinOps Ativa:</strong> Licenças Power BI Pro isentas devido ao uso do Fabric F64-RES.`;
-      } else if ((regime === '5-12' || regime === '5-10') && skuInfo.type === 'PAYG') {
-        const savings = Math.round((1 - (hours / 730)) * 100);
-        msg = `<strong>Otimização de Escala Ativa:</strong> Pausa automática de computação Fabric PAYG ativada fora do horário comercial (Economia de ~${savings}% em compute).`;
-      } else if ((regime === '5-12' || regime === '5-10') && skuInfo.type === 'RES') {
-        msg = `<strong>Alerta FinOps:</strong> Capacidades Reservadas (RES) possuem custos fixos 24/7. Considere usar Pay-As-You-Go para habilitar a pausa automática no regime ${regime}.`;
-      } else {
-        msg = `<strong>Estratégia Anti-Sobreposição Ativa:</strong> Componentes integrados e dimensionados sob demanda (SQL Serverless + Functions) sem redundância.`;
-      }
-      finopsBadge.innerHTML = msg;
-    }
   } catch (error) {
     console.error("Error in calculateCosts:", error);
   }
@@ -273,7 +437,7 @@ function animateCounter(elementId, targetValue) {
   const el = document.getElementById(elementId);
   if (!el) return;
 
-  const startValue = parseFloat(el.textContent.replace(/[^\d.-]/g, '')) || 0;
+  const startValue = el._currentValue || parseFloat(el.textContent.replace(/[^\d.-]/g, '')) || 0;
   const duration = 400; // milliseconds
   const startTime = performance.now();
 
@@ -285,7 +449,12 @@ function animateCounter(elementId, targetValue) {
     const easeProgress = 1 - Math.pow(1 - progress, 3);
     const currentValue = startValue + (targetValue - startValue) * easeProgress;
     
-    el.textContent = currentValue.toFixed(2);
+    el._currentValue = currentValue;
+    if (currentCurrency === 'BRL') {
+      el.textContent = currentValue.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    } else {
+      el.textContent = currentValue.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    }
 
     if (progress < 1) {
       requestAnimationFrame(updateCounter);
